@@ -127,15 +127,15 @@ async def unhandled_exception_handler(request, exc):
     logging.exception("Unhandled error")
     return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
 
-if DEBUG:
-    @app.exception_handler(Exception)
-    async def dev_exception_handler(request: Request, exc: Exception):
-        return JSONResponse(
-            status_code=500,
-            content={
-                "detail": str(exc),
-                "exception": exc.__class__.__name__,
-                "traceback": traceback.format_exc(),
-                "path": str(request.url),
-            },
-        )
+# if DEBUG:
+#     @app.exception_handler(Exception)
+#     async def dev_exception_handler(request: Request, exc: Exception):
+#         return JSONResponse(
+#             status_code=500,
+#             content={
+#                 "detail": str(exc),
+#                 "exception": exc.__class__.__name__,
+#                 "traceback": traceback.format_exc(),
+#                 "path": str(request.url),
+#             },
+#         )

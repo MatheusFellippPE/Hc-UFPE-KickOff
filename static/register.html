@@ -20,25 +20,45 @@
           <div class="grid grid--2">
             <div class="form__group">
               <label for="password" class="form__label">Senha</label>
-              <input id="password" name="password" type="password" class="form__input"
-                     required minlength="6" maxlength="8"
-                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,8}$"
-                     title="6-8 chars, 1 minúscula, 1 maiúscula, 1 número, 1 especial, sem espaços" />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                class="form__input"
+                required
+                minlength="6"
+                maxlength="8"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,8}$"
+                title="6-8 chars, 1 minúscula, 1 maiúscula, 1 número, 1 especial, sem espaços"
+              />
             </div>
             <div class="form__group">
               <label for="password_confirmation" class="form__label">Confirmar senha</label>
-              <input id="password_confirmation" name="password_confirmation" type="password" class="form__input" required maxlength="8" />
+              <input
+                id="password_confirmation"
+                name="password_confirmation"
+                type="password"
+                class="form__input"
+                required
+                maxlength="8"
+              />
             </div>
           </div>
 
-          <div class="block req-list" id="pwReqList">
-            <div class="req" data-key="len">6-8 caracteres</div>
-            <div class="req" data-key="lower">Ao menos 1 letra minúscula</div>
-            <div class="req" data-key="upper">Ao menos 1 letra maiúscula</div>
-            <div class="req" data-key="digit">Ao menos 1 número</div>
-            <div class="req" data-key="special">Ao menos 1 caractere especial</div>
-            <div class="req" data-key="space">Sem espaços</div>
-            <div class="req" data-key="match">Senhas iguais</div>
+          <div class="callout" id="pwCallout" aria-live="polite">
+            <div class="pw-meter" id="pwMeter" aria-hidden="true">
+              <span class="pw-meter__bar"></span>
+            </div>
+            <p class="callout__title">Sua senha deve ter:</p>
+            <ul class="req-list" id="pwReqList">
+              <li class="req" data-key="len">6-8 caracteres</li>
+              <li class="req" data-key="lower">Ao menos 1 letra minúscula</li>
+              <li class="req" data-key="upper">Ao menos 1 letra maiúscula</li>
+              <li class="req" data-key="digit">Ao menos 1 número</li>
+              <li class="req" data-key="special">Ao menos 1 caractere especial</li>
+              <li class="req" data-key="space">Sem espaços</li>
+              <li class="req" data-key="match">Senhas iguais</li>
+            </ul>
           </div>
 
           <div class="form__group">

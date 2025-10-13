@@ -149,9 +149,83 @@ pre.code {
 .req--bad { color: var(--color-danger); }
 .req--bad::before { content: "✖"; }
 
+/* Callout / Painel de dicas */
+.callout {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: rgba(37, 99, 235, .06);
+}
+.callout__title {
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  font-size: .95rem;
+}
+
+/* Lista de requisitos */
+.req-list {
+  list-style: none;
+  margin: 8px 0 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.req {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-muted);
+}
+.req::before {
+  content: "○";
+  font-size: .8rem;
+  color: var(--color-muted);
+}
+.req--ok { color: var(--color-success); }
+.req--ok::before { content: "✔"; color: var(--color-success); }
+.req--bad { color: var(--color-danger); }
+.req--bad::before { content: "✖"; color: var(--color-danger); }
+
+/* Medidor de força */
+.pw-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.pw-meter__bar {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--color-danger);
+  transition: width .2s ease, background-color .2s ease;
+}
+.pw-meter.is-medium .pw-meter__bar { background: #f59e0b; } /* amber */
+.pw-meter.is-strong .pw-meter__bar { background: var(--color-success); }
+
+/* Alerts para mensagens */
+.alert {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+}
+.alert--success {
+  background: rgba(22,163,74,.08);
+  border-color: rgba(22,163,74,.35);
+}
+.alert--error {
+  background: rgba(220,38,38,.08);
+  border-color: rgba(220,38,38,.35);
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body { background: var(--color-bg-dark); color: var(--color-fg-dark); }
   .card { background: var(--color-bg-dark); border-color: var(--color-border-dark); }
   pre.code { background: #0b0b0b; border-color: var(--color-border-dark); }
+  .callout { background: rgba(37, 99, 235, .12); border-color: var(--color-border-dark); }
+  .pw-meter { background: #1f2937; }
+  .alert { border-color: var(--color-border-dark); }
 }
