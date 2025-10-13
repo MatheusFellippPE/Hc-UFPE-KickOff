@@ -13,7 +13,7 @@ from crud import get_user_by_email
 from models import User
 
 pwd_context = CryptContext(
-    schemes=["bcrypt_sha256", "bcrypt"],  # novo padrão + compat com hashes antigos
+    schemes=["pbkdf2_sha256", "bcrypt_sha256", "bcrypt"],  # padrão seguro + compat
     deprecated="auto",
 )
 

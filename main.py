@@ -55,7 +55,10 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email já está cadastrado."
         )
-    hashed = get_password_hash(payload.password)
+    try:
+        hashed = get_password_hash(payload.password)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"password_error: {e}")
     user = create_user(
         db,
         email=payload.email,
