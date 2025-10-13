@@ -12,7 +12,10 @@ from database import get_db
 from crud import get_user_by_email
 from models import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["bcrypt_sha256", "bcrypt"],  # novo padrão + compat com hashes antigos
+    deprecated="auto",
+)
 
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-in-production")
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
