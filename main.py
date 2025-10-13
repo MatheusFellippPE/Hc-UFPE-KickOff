@@ -8,9 +8,13 @@ from fastapi.responses import FileResponse, JSONResponse
 import logging
 import os
 import traceback
+from pydantic import BaseModel
+from typing import Optional, List
+from datetime import datetime
+import re
 
 from database import Base, engine, get_db
-from models import UserType
+from models import UserType, User
 from schemas import UserCreate, UserRead, Token
 from crud import get_user_by_email, create_user
 from auth import verify_password, get_password_hash, create_access_token
@@ -48,6 +52,22 @@ def on_startup():
 def root():
     return {"message": "API de autenticação funcionando!"}
 
+# Regras de senha: 6-8 chars, 1 minúscula, 1 maiúscula, 1 número, 1 especial, sem espaços
+PASSWORD_PATTERN = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{6,8}$')
+
+def validate_password_backend(pw: str):
+    if PASSWORD_PATTERN.match(pw):
+        return
+    # Detalhes por regra (útil para o retorno)
+    fails = []
+    if not (6 <= len(pw) <= 8): fails.append("6-8 caracteres")
+    if not re.search(r'[a-z]', pw): fails.append("ao menos 1 minúscula")
+    if not re.search(r'[A-Z]', pw): fails.append("ao menos 1 maiúscula")
+    if not re.search(r'\d', pw):    fails.append("ao menos 1 número")
+    if not re.search(r'[^A-Za-z0-9]', pw): fails.append("ao menos 1 especial")
+    if re.search(r'\s', pw): fails.append("sem espaços")
+    raise HTTPException(status_code=422, detail={"password_requirements": fails})
+
 @app.post("/users/register", response_model=UserRead, status_code=status.HTTP_201_CREATED, tags=["users"])
 def register(payload: UserCreate, db: Session = Depends(get_db)):
     if get_user_by_email(db, payload.email):
@@ -56,6 +76,9 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
             detail="Email já está cadastrado."
         )
     try:
+        validate_password_backend(payload.password)
+        if payload.password != payload.password_confirmation:
+            raise HTTPException(status_code=422, detail="password_mismatch")
         hashed = get_password_hash(payload.password)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"password_error: {e}")
@@ -66,6 +89,7 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
         user_type=UserType(payload.user_type.value),
     )
     return user
+
 @app.post("/auth/token", response_model=Token, tags=["auth"])
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = get_user_by_email(db, form_data.username)
@@ -77,6 +101,26 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token = create_access_token(subject=user.email)
     return {"access_token": access_token, "token_type": "bearer"}
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+    user_type: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+@app.get("/users", response_model=List[UserOut], tags=["users"])
+def list_users(limit: int = 50, offset: int = 0, db: Session = Depends(get_db)):
+    return db.query(User).order_by(User.id).offset(offset).limit(limit).all()
+
+@app.get("/users/{user_id}", response_model=UserOut, tags=["users"])
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="user_not_found")
+    return user
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request, exc):

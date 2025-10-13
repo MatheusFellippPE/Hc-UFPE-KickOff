@@ -5,6 +5,43 @@
   const result = $("result");
   if (!form) return;
 
+  const elPw = $("password");
+  const elPc = $("password_confirmation");
+  const btnSubmit = document.querySelector("#registerForm button[type='submit']");
+  const reqItems = [...document.querySelectorAll("#pwReqList .req")];
+
+  function check(pw, pc) {
+    return {
+      len: pw.length >= 6 && pw.length <= 8,
+      lower: /[a-z]/.test(pw),
+      upper: /[A-Z]/.test(pw),
+      digit: /\d/.test(pw),
+      special: /[^A-Za-z0-9]/.test(pw),
+      space: !/\s/.test(pw),
+      match: pw.length > 0 && pw === pc,
+    };
+  }
+
+  function renderRules(state) {
+    reqItems.forEach(el => {
+      const key = el.getAttribute("data-key");
+      const ok = !!state[key];
+      el.classList.toggle("req--ok", ok);
+      el.classList.toggle("req--bad", !ok);
+    });
+    const allOk = Object.values(state).every(Boolean);
+    if (btnSubmit) btnSubmit.disabled = !allOk;
+  }
+
+  function update() {
+    const state = check(elPw.value, elPc.value);
+    renderRules(state);
+  }
+
+  elPw.addEventListener("input", update);
+  elPc.addEventListener("input", update);
+  update(); // estado inicial
+
   async function parseResponse(res) {
     const ct = res.headers.get("content-type") || "";
     const text = await res.text();
