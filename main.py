@@ -66,7 +66,6 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
         user_type=UserType(payload.user_type.value),
     )
     return user
-
 @app.post("/auth/token", response_model=Token, tags=["auth"])
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = get_user_by_email(db, form_data.username)
