@@ -1,20 +1,27 @@
 (() => {
   const API_BASE = window.location.origin;
-  const form = document.getElementById("loginForm");
-  const result = document.getElementById("result");
-
+  const $ = (id) => document.getElementById(id);
+  const form = $("loginForm");
+  const result = $("result");
   if (!form) return;
+
+  async function parseResponse(res) {
+    const ct = res.headers.get("content-type") || "";
+    const text = await res.text();
+    if (ct.includes("application/json")) {
+      try { return { data: JSON.parse(text), raw: text }; }
+      catch { return { data: { detail: text }, raw: text }; }
+    }
+    return { data: { detail: text }, raw: text };
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     result.textContent = "Autenticando...";
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
     const body = new URLSearchParams();
-    body.append("username", email);
-    body.append("password", password);
+    body.set("username", $("email").value.trim());
+    body.set("password", $("password").value);
 
     try {
       const res = await fetch(`${API_BASE}/auth/token`, {
@@ -23,8 +30,11 @@
         body
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Falha no login");
+      const { data, raw } = await parseResponse(res);
+      if (!res.ok) {
+        const msg = data.detail || data.error || raw || `${res.status} ${res.statusText}`;
+        throw new Error(msg);
+      }
 
       result.innerHTML = `
         <p>Login efetuado com sucesso!</p>

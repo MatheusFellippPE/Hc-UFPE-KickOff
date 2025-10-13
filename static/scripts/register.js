@@ -1,19 +1,29 @@
 (() => {
   const API_BASE = window.location.origin;
-  const form = document.getElementById("registerForm");
-  const result = document.getElementById("result");
-
+  const $ = (id) => document.getElementById(id);
+  const form = $("registerForm");
+  const result = $("result");
   if (!form) return;
+
+  async function parseResponse(res) {
+    const ct = res.headers.get("content-type") || "";
+    const text = await res.text();
+    if (ct.includes("application/json")) {
+      try { return { data: JSON.parse(text), raw: text }; }
+      catch { return { data: { detail: text }, raw: text }; }
+    }
+    return { data: { detail: text }, raw: text };
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     result.textContent = "Registrando...";
 
     const payload = {
-      email: document.getElementById("email").value.trim(),
-      password: document.getElementById("password").value,
-      password_confirmation: document.getElementById("password_confirmation").value,
-      user_type: document.getElementById("user_type").value,
+      email: $("email").value.trim(),
+      password: $("password").value,
+      password_confirmation: $("password_confirmation").value,
+      user_type: $("user_type").value,
     };
 
     try {
@@ -23,11 +33,11 @@
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const { data, raw } = await parseResponse(res);
       if (!res.ok) {
         const msg = Array.isArray(data.detail)
           ? data.detail.map(d => d.msg || d.detail).join(", ")
-          : (data.detail || "Falha no cadastro");
+          : (data.detail || data.error || raw || `${res.status} ${res.statusText}`);
         throw new Error(msg);
       }
 

@@ -1,10 +1,13 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+import logging
+import os
+import traceback
 
 from database import Base, engine, get_db
 from models import UserType
@@ -12,7 +15,8 @@ from schemas import UserCreate, UserRead, Token
 from crud import get_user_by_email, create_user
 from auth import verify_password, get_password_hash, create_access_token
 
-app = FastAPI(title="Auth API", version="1.0.0")
+DEBUG = os.getenv("DEBUG", "false").lower() == "true"
+app = FastAPI(title="Auth API", version="1.0.0", debug=DEBUG)
 
 # Monta a pasta 'static' para servir arquivos estáticos
 BASE_DIR = Path(__file__).parent
@@ -71,3 +75,21 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token = create_access_token(subject=user.email)
     return {"access_token": access_token, "token_type": "bearer"}
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request, exc):
+    logging.exception("Unhandled error")
+    return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
+
+if DEBUG:
+    @app.exception_handler(Exception)
+    async def dev_exception_handler(request: Request, exc: Exception):
+        return JSONResponse(
+            status_code=500,
+            content={
+                "detail": str(exc),
+                "exception": exc.__class__.__name__,
+                "traceback": traceback.format_exc(),
+                "path": str(request.url),
+            },
+        )
