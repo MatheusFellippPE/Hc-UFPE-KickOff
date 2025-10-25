@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+:root {
+    --cor-azul: #48A6C7;
+    --cor-verde: #89C748;
+    --cor-preto: #0B1215;
+    --cor-branco: #F0F0F0;
+    --fonte-primaria: 'Arial', sans-serif;
+    --fonte-mont: 'Montserrat';
+    --fonte-lato: 'Lato';
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: var(--cor-preto);
+}
+
+body {
+    background-color: var(--cor-branco);
+}

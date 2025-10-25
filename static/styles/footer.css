@@ -1,0 +1,36 @@
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: var(--cor-verde) 2px solid;
+    padding: 10px 150px;
+    gap: 10px;
+    font-family: var(--fonte-lato);
+}
+
+.informacoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: inherit;
+    width: 230px;
+}
+
+.links-sociais {
+    display: flex;
+    gap: inherit;
+}
+
+/* Ajustes responsivos simples */
+@media (max-width: 900px) {
+    header {
+        padding: 8px 20px;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav {
+        gap: 20px;
+    }
+}
