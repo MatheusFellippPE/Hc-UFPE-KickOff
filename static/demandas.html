@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Demandas</title>
+</head>
+
+<body>
+  <h1>Demandas</h1>
+
+  <button id="btnNova">Inserir demanda</button>
+
+  <form id="formDemanda" style="display:none; margin-top:10px;">
+    <div>
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required />
+    </div>
+    <div>
+      <label for="descricao">Descrição da demanda:</label><br />
+      <textarea id="descricao" name="descricao" rows="4" cols="50" required></textarea>
+    </div>
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" name="status" required>
+        <option value="recebida">recebida</option>
+        <option value="em analise">em analise</option>
+        <option value="em andamento">em andamento</option>
+        <option value="concluida">concluida</option>
+      </select>
+    </div>
+    <div style="margin-top:8px;">
+      <button type="submit">Salvar</button>
+      <button type="button" id="btnCancelar">Cancelar</button>
+    </div>
+  </form>
+
+  <hr />
+
+  <ul id="listaDemandas"></ul>
+
+  <script src="scripts/demandas.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "hc-ufpe-kickoff",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema simples de demandas com FastAPI e SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "py -m uvicorn app:app --reload --port 8000"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}

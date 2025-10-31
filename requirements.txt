@@ -1,6 +1,6 @@
 # App
-fastapi>=0.103.0,<1.0.0
-uvicorn[standard]>=0.23.0,<1.0.0
+fastapi
+uvicorn[standard]
 
 # DB/ORM
 sqlalchemy>=2.0.0,<3.0.0
