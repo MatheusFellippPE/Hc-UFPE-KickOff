@@ -27,3 +27,21 @@ header {
     font-weight: bold;
     font-family: var(--fonte-mont);
 }
+
+.img-hx {
+  height: 1.5rem !important; /* 24px */
+  width: auto !important;
+}
+
+/* Sublinhado cinza leve nos links da navbar */
+.navegacao a {
+    text-decoration: underline;
+    text-decoration-color: #d9d9d9; /* cinza claro */
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .navegacao a:hover {
+    text-decoration-color: #bfbfbf; /* levemente mais escuro no hover */
+  }
+  
+  

@@ -37,10 +37,10 @@ main {
     font-weight: bold;
 }
 
-/* Cards alinhados com o banner e em grid com áreas: 
+/* Cards da landing page em grid:
    a a a b b b
    c c d d e e */
-.cards {
+.cards-landing-page {
     width: 85%;
     margin: 24px auto;
     box-sizing: border-box;
@@ -54,43 +54,49 @@ main {
 }
 
 /* Mapeamento dos 5 cards para as áreas */
-.cards > :nth-child(1) { grid-area: a; }
-.cards > :nth-child(2) { grid-area: b; }
-.cards > :nth-child(3) { grid-area: c; }
-.cards > :nth-child(4) { grid-area: d; }
-.cards > :nth-child(5) { grid-area: e; }
+.cards-landing-page > :nth-child(1) { grid-area: a; }
+.cards-landing-page > :nth-child(2) { grid-area: b; }
+.cards-landing-page > :nth-child(3) { grid-area: c; }
+.cards-landing-page > :nth-child(4) { grid-area: d; }
+.cards-landing-page > :nth-child(5) { grid-area: e; }
 
-/* Layout interno dos cards: 2 colunas (texto | imagem) */
-.cards .card-blue,
-.cards .card-green {
+/* Layout interno dos cards */
+.cards-landing-page .card-blue,
+.cards-landing-page .card-green,
+.cards-Sobre-nos .card-blue,
+.cards-Sobre-nos .card-green {
     min-height: 335px;
     border-radius: 35px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     justify-content: center;
-    gap: 10px;              /* antes: 16px */
-    justify-items: center;  /* centraliza itens no grid */
-    text-align: center;     /* centraliza texto */
+    gap: 10px;
+    justify-items: center;
+    text-align: center;
     box-shadow: 0 7px 6.8px 2px rgba(0, 0, 0, 0.2);
     padding: 20px;
 }
 
 /* Cores/bordas dos cards */
-.cards .card-blue {
-    background: #FFFFFF;                 /* antes: gradient azul */
-    border: 3px solid var(--cor-azul);   /* cor na borda */
-    color: var(--cor-preto, #1f2937);    /* texto legível no fundo branco */
+.cards-landing-page .card-blue,
+.cards-Sobre-nos .card-blue {
+    background: #FFFFFF;
+    border: 3px solid var(--cor-azul);
+    color: var(--cor-preto, #1f2937);
 }
-.cards .card-green {
-    background: #FFFFFF;                 /* antes: gradient verde */
-    border: 3px solid var(--cor-verde);  /* cor na borda */
-    color: var(--cor-preto, #1f2937);    /* texto legível no fundo branco */
+.cards-landing-page .card-green,
+.cards-Sobre-nos .card-green {
+    background: #FFFFFF;
+    border: 3px solid var(--cor-verde);
+    color: var(--cor-preto, #1f2937);
 }
 
-/* Imagens dos cards visíveis e proporcionais */
-.cards .card-blue img,
-.cards .card-green img {
+/* Imagens dos cards */
+.cards-landing-page .card-blue img,
+.cards-landing-page .card-green img,
+.cards-Sobre-nos .card-blue img,
+.cards-Sobre-nos .card-green img {
     width: 100%;
     height: auto;
     max-height: 260px;
@@ -98,24 +104,28 @@ main {
     display: block;
 }
 
-/* Padroniza tamanho e força cor preta nos SVGs dos cards */
-.cards img[src$="atom.svg"],
-.cards img[src$="handshake.svg"] {
+/* Padroniza tamanho/cor dos SVGs */
+.cards-landing-page img[src$="atom.svg"],
+.cards-landing-page img[src$="handshake.svg"],
+.cards-Sobre-nos img[src$="atom.svg"],
+.cards-Sobre-nos img[src$="handshake.svg"] {
     width: 60%;
     height: auto;
     max-height: 260px;
-    filter: brightness(0) saturate(100%); /* deixa o SVG preto */
+    filter: brightness(0) saturate(100%);
 }
 
-/* Ocultar imagens quebradas ou sem src */
-.cards img[src=""],
-.cards img:not([src]) {
+/* Ocultar imagens quebradas */
+.cards-landing-page img[src=""],
+.cards-landing-page img:not([src]),
+.cards-Sobre-nos img[src=""],
+.cards-Sobre-nos img:not([src]) {
     display: none;
 }
 
-/* Responsividade: empilhar as áreas no mobile */
+/* Responsividade: empilhar no mobile */
 @media (max-width: 768px) {
-    .cards {
+    .cards-landing-page {
         grid-template-columns: 1fr;
         grid-template-areas:
             "a"
@@ -124,10 +134,68 @@ main {
             "d"
             "e";
     }
-    .cards .card-blue,
-    .cards .card-green {
+    .cards-landing-page .card-blue,
+    .cards-landing-page .card-green,
+    .cards-Sobre-nos .card-blue,
+    .cards-Sobre-nos .card-green {
         grid-template-columns: 1fr;
     }
+    .cards-Sobre-nos {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "a"
+            "b"
+            "c"
+            "d";
+    }
+}
+
+/* Tipografia global */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+    font-weight: 600;
+}
+p {
+    font-family: "Syne", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Tipografia específica dos cards da landing page */
+.cards-landing-page h3,
+.cards-Sobre-nos h3 {
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+.cards-landing-page p,
+.cards-Sobre-nos p {
+    font-weight: 400;
+    font-size: 1.125rem;
+}
+
+/* Limite global de largura (85%) */
+header,
+footer {
+    width: 100%;
+    max-width: none;  /* removido o limite de 85% */
+    margin: 0;       /* remove centralização forçada */
+    box-sizing: border-box;
+}
+
+/* Limitar todos os componentes dentro de <main> a 85%, exceto a seção final */
+main > * {
+    width: 100%;
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* Reverter a seção "Nosso Corpo Clínico e Docente" ao estado anterior */
+main > h2.topico:last-of-type,
+main > .cards-colaboradores {
+    max-width: none;
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .cards-colaboradores {
@@ -151,23 +219,23 @@ main {
         padding: 20px;
 }
 
-/* Tipografia global */
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
-    font-weight: 600;
-}
-p {
-    font-family: "Syne", "Helvetica Neue", Arial, sans-serif;
+/* Container dos cards da página Sobre Nós (grid: a a b b / c c d d) */
+.cards-Sobre-nos {
+    width: 85%;
+    margin: 24px auto;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+        "a a b b"
+        "c c d d";
+    gap: 24px;
+    color: var(--cor-branco);
 }
 
-/* Tipografia específica dos cards */
-.cards h1 {
-    font-weight: 700;      /* bold */
-    font-size: 2.5rem;     /* ~40px */
-}
-
-.cards p {
-    font-weight: 400;      /* regular */
-    font-size: 0.9375rem;  /* ~15px */
-}
+/* Mapeamento dos 4 cards para as áreas */
+.cards-Sobre-nos > :nth-child(1) { grid-area: a; }
+.cards-Sobre-nos > :nth-child(2) { grid-area: b; }
+.cards-Sobre-nos > :nth-child(3) { grid-area: c; }
+.cards-Sobre-nos > :nth-child(4) { grid-area: d; }
 
