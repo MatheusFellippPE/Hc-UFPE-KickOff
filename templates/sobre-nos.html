@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <title>Página Inicial</title>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
+            <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo da Ebserh">
+        </div>
+        <nav class="navegacao">
+            <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+            <a href="#">Artigos</a>
+            <a href="#">Serviços</a>
+            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="#">Hub</a>
+            <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
+        </nav>
+    </header>
+    <main>
+        <img class="img-banner" src="{% static 'src/sobre-nos-img.png' %}" alt="">
+        <h2 class="topico">Os Pilares do Hospital</h2>
+        <div class="cards-Sobre-nos">
+            <div class="card-green">
+                <p>Somos um centro de referência para casos complexos, oferecendo diagnósticos precisos e tratamentos avançados em diversas especialidades. Nossa estrutura é preparada para atender às demandas mais desafiadoras da saúde pública em Pernambuco.</p>
+                <h3>Assistência de Alta Complexidade</h3>
+            </div>
+            <div class="card-blue">
+                <h3>Um Hospital de Ensino</h3>
+                <p>Em parceria com a UFPE, somos o principal campo de prática para estudantes, residentes e pós-graduandos. Nossos pacientes são cuidados por equipes que unem a experiência de professores renomados à energia e dedicação de futuros especialistas.</p>
+            </div>
+            <div class="card-blue">
+                <p>Incentivamos a pesquisa clínica como ferramenta para avançar a medicina. Nossos profissionais estão engajados em estudos que buscam novas terapias e protocolos, traduzindo as descobertas científicas em benefícios diretos para o tratamento de nossos pacientes.</p>
+                <h3>Pesquisa que Inova o Cuidado</h3>
+            </div>
+            <div class="card-green">
+                <h3>Equipes Multidisciplinares</h3>
+                <p>Acreditamos no cuidado integral. Nossas equipes são compostas por médicos, enfermeiros, fisioterapeutas, psicólogos e diversos outros profissionais que trabalham de forma integrada para oferecer um tratamento completo e humanizado a cada paciente.</p>
+            </div>
+        </div>
+        <h2 class="topico">Nosso Corpo Clínico e Docente</h2>
+        <div class="cards-colaboradores">
+            <div class="colaborador">
+                <img src="{% static 'src/dra-ana-beatriz.png' %}" alt="">
+                <p><strong>Dra. Ana Beatriz Vasconcelos</strong></p>
+                <p>Diretora de Atenção à Saúde</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dr-ricardo-almeida.png' %}" alt="">
+                <p><strong>Dr. Ricardo Almeida</strong></p>
+                <p>Superintendente do HC-UFPE</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dr-marcos-valenca.png' %}" alt="">
+                <p><strong>Dr. Marcos Valença</strong></p>
+                <p>Chefe da Clínica Médica</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dra-claudia-monteiro.png' %}" alt="">
+                <p><strong>Dra. Cláudia Monteiro</strong></p>
+                <p>Chefe do Serviço de Cirurgia Geral</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dr-paulo-gusmao.png' %}" alt="">
+                <p><strong>Dr. Paulo Gusmão</strong></p>
+                <p>Coordenador da Residência Médica</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dra-helena-correia.png' %}" alt="">
+                <p><strong>Dra. Helena Correia</strong></p>
+                <p>Chefe do Serviço de Pediatria</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/enfa-lucia-ferreira.png' %}" alt="">
+                <p><strong>Enf.ª Lúcia Ferreira</strong></p>
+                <p>Chefe da Divisão de Enfermagem</p>
+            </div>
+            <div class="colaborador">
+                <img src="{% static 'src/dr-bruno-cavalcanti.png' %}" alt="">
+                <p><strong>Dr. Bruno Cavalcanti</strong></p>
+                <p>Gerente de Ensino e Pesquisa</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="informacoes">
+            <p><strong>Localização</strong></p>
+            <p>Av. Prof. Moraes Rego, 1235</p>
+            <p>Cidade Universitária, Recife - PE</p>
+        </div>
+        <div class="informacoes">
+            <p><strong>Contato</strong></p>
+            <p>(81) 2126-3000</p>
+            <p>contato.hc@ufpe.br</p>
+        </div>
+        <div>
+            <p><strong>FAQ</strong></p>
+        </div>
+        <div>
+            <p><strong>Especialidades Médicas</strong></p>
+        </div>
+        <nav class="links-sociais">
+            <a href=""><img src="{% static 'src/InstagramLogo.png' %}" alt="Instagram"></a>
+            <a href=""><img src="{% static 'src/FacebookLogo.png' %}" alt="Facebook"></a>
+            <a href=""><img src="{% static 'src/WhatsappLogo.png' %}" alt="Whatsapp"></a>
+        </nav>
+    </footer>
+</body>
+
+</html>

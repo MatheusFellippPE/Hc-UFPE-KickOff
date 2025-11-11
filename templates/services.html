@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Serviços</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo HC-UFPE">
+        <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo Ebserh">
+    </div>
+    <nav class="navegacao">
+        <a href="{% url 'landing' %}">Início</a>
+        <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+        <a href="{% url 'home' %}">Serviços</a>
+        <a href="{% url 'demandas' %}">Demandas</a>
+        <a href="#">Hub</a>
+        <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
+    </nav>
+</header>
+<main>
+    <h1>Serviços</h1>
+    <section class="cards-servicos">
+        <div class="card-blue">
+            <h2>Diagnóstico por Imagem</h2>
+            <p>Tomografia, Ressonância, Ultrassom.</p>
+        </div>
+        <div class="card-green">
+            <h2>Ambulatório Especializado</h2>
+            <p>Atendimento em múltiplas especialidades.</p>
+        </div>
+        <div class="card-blue">
+            <h2>Centro Cirúrgico</h2>
+            <p>Estrutura para procedimentos de alta complexidade.</p>
+        </div>
+        <div class="card-green">
+            <h2>Laboratório Clínico</h2>
+            <p>Exames bioquímicos e microbiológicos.</p>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>&copy; HC-UFPE</p>
+</footer>
+</body>
+</html>

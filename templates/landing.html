@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <title>Página Inicial</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
+            <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo da Ebserh">
+        </div>
+        <nav class="navegacao">
+            <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+            <a href="#">Artigos</a>
+            <a href="#">Serviços</a>
+            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="#">Hub</a>
+            <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
+        </nav>
+    </header>
+    <main>
+        <div class="banner">
+            <img class="img-banner" src="{% static 'src/doutor-img1.png' %}" alt="Doutor sorrindo">
+        </div>
+        <section class="cards-landing-page">
+            <div class="card-blue">
+                <p> Integrado à UFPE, nosso hospital é um centro de excelência na formação de novos médicos e especialistas. Essa união entre assistência, ensino e pesquisa nos permite oferecer uma medicina que evolui a cada dia, beneficiando diretamente nossos pacientes.</p>
+                <h1>Hospital de Ensino e Pesquisa</h1>
+            </div>
+            <div class="card-green">
+                <h1>Referência em Alta Complexidade</h1>
+                <img src="{% static 'src/atom.svg' %}" alt="">
+            </div>
+            <div class="card-blue">
+                <h1>Corpo Clínico Qualificado</h1>
+                <p> Nosso maior diferencial são as pessoas. Contamos com um corpo clínico formado por professores, mestres e doutores da UFPE</p>
+            </div>
+            <div class="card-green">
+                <h1>Tecnologia e Diagnóstico Avançado</h1>
+                <p>Aliamos nossa tradição à inovação constante</p>
+            </div>
+            <div class="card-blue">
+                <h1>Tecnologia e Diagnóstico Avançado</h1>
+                <img src="{% static 'src/handshake.svg' %}" alt="">
+            </div>
+        </section>
+        <div class="banner">
+            <img class="img-banner" src="{% static 'src/equipe-img2.png' %}" alt="Equipe médica conversando">
+        </div>
+    </main>
+    <footer>
+        <div class="informacoes">
+            <p><strong>Localização</strong></p>
+            <p>Av. Prof. Moraes Rego, 1235</p>
+            <p>Cidade Universitária, Recife - PE</p>
+        </div>
+        <div class="informacoes">
+            <p><strong>Contato</strong></p>
+            <p>(81) 2126-3000</p>
+            <p>contato.hc@ufpe.br</p>
+        </div>
+        <div>
+            <p><strong>FAQ</strong></p>
+        </div>
+        <div>
+            <p><strong>Especialidades Médicas</strong></p>
+        </div>
+        <nav class="links-sociais">
+            <a href=""><img src="{% static 'src/InstagramLogo.png' %}" alt="Instagram"></a>
+            <a href=""><img src="{% static 'src/FacebookLogo.png' %}" alt="Facebook"></a>
+            <a href=""><img src="{% static 'src/WhatsappLogo.png' %}" alt="Whatsapp"></a>
+        </nav>
+    </footer>
+</body>
+</html>

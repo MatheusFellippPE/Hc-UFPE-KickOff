@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+</head>
+<body>
+  <h1>Login</h1>
+
+  {% if form.non_field_errors %}
+    <div>
+      {% for err in form.non_field_errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+    <div>
+      <label for="id_email">Email</label>
+      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" required />
+      {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+    <div>
+      <label for="id_password">Senha</label>
+      <input type="password" name="password" id="id_password" required />
+      {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <p><a href="{% url 'accounts:register' %}">Criar conta</a></p>
+</body>
+</html>
