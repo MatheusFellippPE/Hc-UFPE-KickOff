@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 from .forms import RegistrationForm, EmailLoginForm
 from .models import Profile
 
@@ -46,3 +47,12 @@ def login_view(request):
     else:
         form = EmailLoginForm()
     return render(request, "login.html", {"form": form})
+
+@require_http_methods(["POST", "GET"])
+def logout_view(request):
+    """
+    Encerra a sessão do usuário e redireciona para 'next' (ou landing '/').
+    """
+    logout(request)
+    next_url = request.POST.get("next") or request.GET.get("next") or "/"
+    return redirect(next_url)
