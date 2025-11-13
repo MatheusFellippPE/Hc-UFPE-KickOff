@@ -10,4 +10,5 @@ urlpatterns = [
     path("home/", list_create_demands, name="home"),  # agora aceita POST
     path("demandas/", include("demands.urls")),
     path("sobre-nos/", TemplateView.as_view(template_name="sobre-nos.html"), name="sobre_nos"),
+    path("hub/", TemplateView.as_view(template_name="hub.html"), name="hub"),
 ]
