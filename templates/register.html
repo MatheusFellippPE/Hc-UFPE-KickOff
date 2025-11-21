@@ -1,11 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
   <title>Registro</title>
 </head>
 <body>
-  <h1>Registro</h1>
+  <h1>Sua Saúde na Palma da Mão</h1>
+  <p>Cadastre-se para acessar o Portal do Paciente do HC e gerenciar suas informações com praticidade.</p>
 
   {% if form.non_field_errors %}
     <div>
@@ -18,13 +22,13 @@
 
     <div>
       <label for="id_name">Nome completo</label>
-      <input type="text" name="name" id="id_name" value="{{ form.data.name }}" required />
+      <input type="text" name="name" id="id_name" value="{{ form.data.name }}" placeholder="Nome Completo" required />
       {% for err in form.name.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
 
     <div>
       <label for="id_email">Email</label>
-      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" required />
+      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder ="E-mail" required />
       {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
 
@@ -41,21 +45,21 @@
 
     <div>
       <label for="id_password">Senha</label>
-      <input type="password" name="password" id="id_password" required />
+      <input type="password" name="password" id="id_password" placeholder="Senha" required />
       <small>Mín. 8, com maiúscula, minúscula, número e especial.</small>
       {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
 
     <div>
       <label for="id_password_confirmation">Confirmar Senha</label>
-      <input type="password" name="password_confirmation" id="id_password_confirmation" required />
+      <input type="password" name="password_confirmation" id="id_password_confirmation" placeholder="Confirmar Senha" required />
       {% for err in form.password_confirmation.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
 
     <button type="submit">Registrar</button>
   </form>
 
-  <p><a href="{% url 'accounts:login' %}">Já tenho conta</a></p>
+  <p>Já possui conta?<a href="{% url 'accounts:login' %}"> Entrar</a></p>
 </body>
 </html>
 
