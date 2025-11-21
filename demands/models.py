@@ -37,3 +37,53 @@ class Demand(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.status})"
+
+
+# Forum/tag/post models stored in the same 'demands' app and therefore routed to the 'demands' sqlite DB
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        db_table = "demandas_tag"
+
+    def __str__(self):
+        return self.name
+
+
+class Post(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="posts",
+        db_constraint=False,
+    )
+    title = models.CharField(max_length=200)
+    body = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "demandas_post"
+        ordering = ["-created_at"]
+
+    def author_name(self):
+        if self.author:
+            return getattr(self.author, "username", str(self.author))
+        return "Anônimo"
+
+    def __str__(self):
+        return self.title
+
+
+class PostMedia(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="media")
+    file = models.FileField(upload_to="post_media/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "demandas_postmedia"
+
+    def __str__(self):
+        return f"Media for {self.post_id}: {self.file.name}"

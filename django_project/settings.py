@@ -77,6 +77,11 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"  # usado por collectstatic em produção
+
+# Media files (uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # ALLOWED_HOSTS já vem de variável de ambiente; em produção defina ALLOWED_HOSTS="seu_dominio,localhost,127.0.0.1"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -16,6 +16,7 @@
 
   <form method="post" action="{% url 'accounts:login' %}">
     {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
     <div>
       <label for="id_email">Email</label>
       <input type="email" name="email" id="id_email" value="{{ form.data.email }}" required />
@@ -29,6 +30,6 @@
     <button type="submit">Entrar</button>
   </form>
 
-  <p><a href="{% url 'accounts:register' %}">Criar conta</a></p>
+  <p><a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Criar conta</a></p>
 </body>
 </html>
