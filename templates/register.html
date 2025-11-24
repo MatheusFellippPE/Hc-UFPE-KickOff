@@ -8,66 +8,58 @@
   <title>Registro</title>
 </head>
 <body>
-  
+  <h1>Sua Saúde na Palma da Mão</h1>
+  <p>Cadastre-se para acessar o Portal do Paciente do HC e gerenciar suas informações com praticidade.</p>
+
   {% if form.non_field_errors %}
-  <div>
-    {% for err in form.non_field_errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-  </div>
+    <div>
+      {% for err in form.non_field_errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
   {% endif %}
-  
-  <img src="{% static 'src\doutorar-registro-login.png' %}" alt="imagem de médica sorrindo">
 
-  <form class="formulario" method="post" action="{% url 'accounts:register' %}">
-    <div class="logo">
-      <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
-      <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo da Ebserh">
-    </div>
-
-    <div class="texto">
-      <h1>Sua Saúde na Palma da Mão</h1>
-      <p>Cadastre-se para acessar o Portal do Paciente do HC e gerenciar suas informações com praticidade.</p>
-    </div>
-
+  <form method="post" action="{% url 'accounts:register' %}">
     {% csrf_token %}
 
-    <div class="inputs">
-      <div>
-        <label for="id_name">Nome completo</label>
-        <input type="text" name="name" id="id_name" value="{{ form.data.name }}" placeholder="Nome Completo" required />
-        {% for err in form.name.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
-      <div>
-        <label for="id_email">Email</label>
-        <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder ="E-mail" required />
-        {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
-      <div>
-        <label for="id_user_type">Tipo de usuário</label>
-        <select name="user_type" id="id_user_type" required>
-          <option value="aluno" {% if form.data.user_type == "aluno" %}selected{% endif %}>Aluno</option>
-          <option value="professor" {% if form.data.user_type == "professor" %}selected{% endif %}>Professor</option>
-          <option value="pesquisador" {% if form.data.user_type == "pesquisador" %}selected{% endif %}>Pesquisador</option>
-          <option value="outro" {% if form.data.user_type == "outro" %}selected{% endif %}>Outro</option>
-        </select>
-        {% for err in form.user_type.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
-      <div>
-        <label for="id_password">Senha</label>
-        <input type="password" name="password" id="id_password" placeholder="Senha" required /><br>
-        <small>Mín. 8, com maiúscula, minúscula, número e especial.</small>
-        {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
-      <div>
-        <label for="id_password_confirmation">Confirmar Senha</label>
-        <input type="password" name="password_confirmation" id="id_password_confirmation" placeholder="Confirmar Senha" required />
-        {% for err in form.password_confirmation.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
-      <p>Já possui conta?<a href="{% url 'accounts:login' %}"> Entrar</a></p>
+    <div>
+      <label for="id_name">Nome completo</label>
+      <input type="text" name="name" id="id_name" value="{{ form.data.name }}" placeholder="Nome Completo" required />
+      {% for err in form.name.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label for="id_email">Email</label>
+      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder ="E-mail" required />
+      {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label for="id_user_type">Tipo de usuário</label>
+      <select name="user_type" id="id_user_type" required>
+        <option value="aluno" {% if form.data.user_type == "aluno" %}selected{% endif %}>Aluno</option>
+        <option value="professor" {% if form.data.user_type == "professor" %}selected{% endif %}>Professor</option>
+        <option value="pesquisador" {% if form.data.user_type == "pesquisador" %}selected{% endif %}>Pesquisador</option>
+        <option value="outro" {% if form.data.user_type == "outro" %}selected{% endif %}>Outro</option>
+      </select>
+      {% for err in form.user_type.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label for="id_password">Senha</label>
+      <input type="password" name="password" id="id_password" placeholder="Senha" required />
+      <small>Mín. 8, com maiúscula, minúscula, número e especial.</small>
+      {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label for="id_password_confirmation">Confirmar Senha</label>
+      <input type="password" name="password_confirmation" id="id_password_confirmation" placeholder="Confirmar Senha" required />
+      {% for err in form.password_confirmation.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
 
     <button type="submit">Registrar</button>
   </form>
 
+  <p>Já possui conta?<a href="{% url 'accounts:login' %}"> Entrar</a></p>
 </body>
 </html>
 

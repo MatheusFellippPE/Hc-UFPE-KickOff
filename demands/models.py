@@ -87,3 +87,24 @@ class PostMedia(models.Model):
 
     def __str__(self):
         return f"Media for {self.post_id}: {self.file.name}"
+
+
+# New model for reactions (like/dislike)
+class PostReaction(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+    VALUE_CHOICES = (
+        (LIKE, "Like"),
+        (DISLIKE, "Dislike"),
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="reactions")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="post_reactions", db_constraint=False)
+    value = models.SmallIntegerField(choices=VALUE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "demandas_postreaction"
+        unique_together = ("post", "user")
+
+    def __str__(self):
+        return f"Reaction({self.get_value_display()}) by {self.user_id} on {self.post_id}"

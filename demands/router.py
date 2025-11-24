@@ -17,6 +17,9 @@ class DemandsRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
+        # Debug output to trace migration decisions
         if app_label == self.app_label:
-            return db == "demands"
+            allowed = db == "demands"
+            print(f"[Router] allow_migrate app={app_label} model={model_name} db={db} -> {allowed}")
+            return allowed
         return None

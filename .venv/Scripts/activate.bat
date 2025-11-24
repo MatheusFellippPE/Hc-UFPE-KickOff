@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\1241308761\Documents\GitHub\Hc-UFPE-KickOff\.venv"
+set "VIRTUAL_ENV=C:\Users\1241308761\Desktop\Hc-UFPE-KickOff\.venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
