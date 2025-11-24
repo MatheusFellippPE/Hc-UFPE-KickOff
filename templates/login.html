@@ -3,10 +3,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
   <title>Login</title>
 </head>
 <body>
-  <h1>Login</h1>
 
   {% if form.non_field_errors %}
     <div>
@@ -14,22 +15,35 @@
     </div>
   {% endif %}
 
-  <form method="post" action="{% url 'accounts:login' %}">
+    <img src="{% static 'src\doutorar-registro-login.png' %}" alt="imagem de médica sorrindo">
+
+  <form class="formulario" method="post" action="{% url 'accounts:login' %}">
+    <div class="logo">
+      <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
+      <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo da Ebserh">
+    </div>
+
+    <div class="texto">
+      <h1>Acesse sua Conta</h1>
+      <p>Sua saúde, conectada a você.</p>
+    </div>
+
     {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
     <div>
       <label for="id_email">Email</label>
-      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" required />
+      <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder="E-mail" required />
       {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
     <div>
       <label for="id_password">Senha</label>
-      <input type="password" name="password" id="id_password" required />
+      <input type="password" name="password" id="id_password" placeholder="Senha" required />
       {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
     </div>
+
+    <p>Não possue Conta?<a href="{% url 'accounts:register' %}">Cadastre-se</a></p>
+
     <button type="submit">Entrar</button>
   </form>
 
-  <p><a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Criar conta</a></p>
 </body>
 </html>

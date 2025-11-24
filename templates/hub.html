@@ -19,95 +19,15 @@
         <a href="{% url 'home' %}">Serviços</a>
         <a href="{% url 'demandas' %}">Demandas</a>
         <a href="{% url 'hub' %}">Hub</a>
-        {% if user.is_authenticated %}
-            <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.path }}" />
-                <button type="submit" class="botao-entrar" style="background:none;border:none;cursor:pointer;">Sair ({{ user.first_name|default:user.username }})</button>
-            </form>
-        {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}" class="botao-entrar">Entrar</a>
-        {% endif %}
+        <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
     </nav>
 </header>
 <main>
     <h1>Hub de Inovação</h1>
-
-    <!-- botão novo post -->
-    <button id="novo-post-btn">Novo post</button>
-
-    <!-- formulário oculto que envia para a mesma view hub_forum -->
-    <form id="novo-post-form" action="{% url 'hub' %}" method="post" enctype="multipart/form-data" style="display:none; margin-top:1rem;">
-        {% csrf_token %}
-        <div>
-            <label for="title">Título</label>
-            <input type="text" id="title" name="title" maxlength="200" required>
-        </div>
-        <div>
-            <label for="tags">Tags (segure Ctrl/Cmd para multiseleção)</label>
-            <select id="tags" name="tags" multiple>
-                {% for tag in tags %}
-                    <option value="{{ tag.name }}">{{ tag.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="body">Texto</label>
-            <textarea id="body" name="body" rows="6" required></textarea>
-        </div>
-        <div>
-            <label for="media">Fotos/Vídeos (vários permitidos)</label>
-            <input id="media" name="media" type="file" multiple accept="image/*,video/*">
-        </div>
-        <div>
-            <button type="submit">Enviar</button>
-            <button type="button" id="cancel-btn">Cancelar</button>
-        </div>
-    </form>
-
-    <!-- lista de posts -->
-    <section id="posts">
-        {% for post in posts %}
-            <article class="post">
-                <h2>{{ post.title }}</h2>
-                <p class="meta">por {% if post.author %}{{ post.author.first_name|default:post.author.username }}{% else %}Anônimo{% endif %} - {{ post.created_at }}</p>
-                <div class="tags">
-                    {% for t in post.tags.all %}
-                        <span class="tag">{{ t.name }}</span>
-                    {% endfor %}
-                </div>
-                <div class="body">{{ post.body|linebreaks }}</div>
-                <div class="media">
-                    {% for m in post.media.all %}
-                        {% if m.file.url %}
-                            <div class="media-item">
-                                {% if m.file.url|slice:"-4:" in ".jpg.png.gif.jpeg.webm.mp4" %}
-                                    <img src="{{ m.file.url }}" alt="media" style="max-width:300px;">
-                                {% else %}
-                                    <a href="{{ m.file.url }}">Download</a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </article>
-        {% empty %}
-            <p>Sem posts ainda.</p>
-        {% endfor %}
-    </section>
-
+    <p>Bem-vindo ao nosso Hub! Em breve mais conteúdos e funcionalidades.</p>
 </main>
 <footer>
     <p>&copy; HC-UFPE</p>
 </footer>
-
-<script>
-    // JS mínimo para mostrar/ocultar o formulário sem trabalhar o front-end
-    const novoBtn = document.getElementById('novo-post-btn');
-    const form = document.getElementById('novo-post-form');
-    const cancelBtn = document.getElementById('cancel-btn');
-    novoBtn.addEventListener('click', () => form.style.display = 'block');
-    cancelBtn.addEventListener('click', () => form.style.display = 'none');
-</script>
 </body>
 </html>
