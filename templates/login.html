@@ -32,9 +32,9 @@
 
       {% csrf_token %}
       {% if next %}
-        <input type="hidden" name="next" value="{{ next }}">
+      <input type="hidden" name="next" value="{{ next }}">
       {% elif request.GET.next %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
       {% endif %}
       <div>
         <label for="id_email">Email</label>

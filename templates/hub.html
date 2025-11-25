@@ -9,6 +9,62 @@
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="stylesheet" href="{% static 'styles/header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/hub.css' %}">
+    <style>
+        /* Galeria de imagens (1, 2 ou 3) */
+        .post .media.gallery {
+            gap: .5rem;
+            margin-top: .5rem;
+        }
+
+        .post .media.gallery.layout-1 .media-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .post .media.gallery.layout-2,
+        .post .media.gallery.layout-3 {
+            display: grid;
+        }
+
+        .post .media.gallery.layout-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* 3 imagens: 1 principal (maior) à esquerda, 2 empilhadas à direita */
+        .post .media.gallery.layout-3 {
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .post .media.gallery.layout-3 .media-item:first-child {
+            grid-row: 1 / span 2;
+        }
+
+        /* Células com recorte para preencher todo o espaço */
+        .post .media.gallery.layout-2 .media-item,
+        .post .media.gallery.layout-3 .media-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .post .media.gallery img,
+        .post .media.gallery video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 640px) {
+            .post .media.gallery.layout-3 {
+                grid-template-columns: 1.5fr 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -102,13 +158,17 @@
                 <div class="media">
                     {% for m in post.media.all %}
                     {% if m.file.url %}
-                    <div class="media-item">
-                        {% if m.file.url|slice:"-4:" in ".jpg.png.gif.jpeg.webm.mp4" %}
-                        <img src="{{ m.file.url }}" alt="media" style="max-width:300px;">
+                    {% with url=m.file.url|lower %}
+                    <div class="media-item {% if url|slice:"-4:" in ".jpg.png.gif.webp" or url|slice:"-5:" == ".jpeg" %}is-image{% elif url|slice:"-4:" in ".mp4.webm.ogg" %}is-video{% endif %}">
+                        {% if url|slice:"-4:" in ".jpg.png.gif.webp" or url|slice:"-5:" == ".jpeg" %}
+                        <img src="{{ m.file.url }}" alt="media">
+                        {% elif url|slice:"-4:" in ".mp4.webm.ogg" %}
+                        <video src="{{ m.file.url }}" controls playsinline></video>
                         {% else %}
                         <a href="{{ m.file.url }}">Download</a>
                         {% endif %}
                     </div>
+                    {% endwith %}
                     {% endif %}
                     {% endfor %}
                 </div>
@@ -188,6 +248,24 @@
             linkField.style.display = (t === 'link') ? 'block' : 'none';
         }
         tabs.forEach(b => b.addEventListener('click', () => setType(b.dataset.type)));
+
+        // Galeria: limitar a 3 imagens e aplicar layout (1, 2 ou 3)
+        document.querySelectorAll('.post .media').forEach(container => {
+            const items = Array.from(container.querySelectorAll('.media-item.is-image'));
+            if (items.length === 0) return;
+
+            // ativar galeria
+            container.classList.add('gallery');
+
+            // esconder imagens além da 3ª
+            items.forEach((it, idx) => {
+                if (idx >= 3) it.style.display = 'none';
+            });
+
+            // definir layout pela quantidade (1, 2 ou 3)
+            const count = Math.min(items.length, 3);
+            container.classList.add(`layout-${count}`);
+        });
     </script>
 </body>
 
