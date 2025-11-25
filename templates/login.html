@@ -1,34 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="{% static 'styles/main.css' %}">
   <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
   <title>Login</title>
 </head>
+
 <body>
-<div class="formulario">
+  <div class="formulario">
     {% if form.non_field_errors %}
-      <div>
-        {% for err in form.non_field_errors %}<p style="color:red">{{ err }}</p>{% endfor %}
-      </div>
+    <div>
+      {% for err in form.non_field_errors %}<p style="color:red">{{ err }}</p>{% endfor %}
+    </div>
     {% endif %}
-  
+
     <img src="{% static 'src\doutora-registro-login.png' %}" alt="imagem de médica sorrindo">
-  
+
     <form method="post" action="{% url 'accounts:login' %}">
       <div class="logo">
         <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
         <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo da Ebserh">
       </div>
-  
+
       <div class="texto">
         <h1>Acesse sua Conta</h1>
         <p>Sua saúde, conectada a você.</p>
       </div>
-  
+
       {% csrf_token %}
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+      {% elif request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+      {% endif %}
       <div>
         <label for="id_email">Email</label>
         <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder="E-mail" required />
@@ -39,13 +46,14 @@
         <input type="password" name="password" id="id_password" placeholder="Senha" required />
         {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
       </div>
-  
-      <p>Não possue Conta?<a href="{% url 'accounts:register' %}"> Cadastre-se</a></p>
-  
+
+      <p>Não possue Conta?<a href="{% url 'accounts:register' %}{% if next %}?next={{ next|urlencode }}{% elif request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}"> Cadastre-se</a></p>
+
       <button type="submit">Entrar</button>
     </form>
-</div>
+  </div>
 
-  <p><a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Criar conta</a></p>
+  <p><a href="{% url 'accounts:register' %}{% if next %}?next={{ next|urlencode }}{% elif request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Criar conta</a></p>
 </body>
+
 </html>

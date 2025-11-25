@@ -181,7 +181,7 @@
         const mediaField = document.querySelector('.input-media');
         const linkField = document.querySelector('.input-link');
 
-        function setType(t){
+        function setType(t) {
             postTypeInput.value = t;
             tabs.forEach(b => b.classList.toggle('active', b.dataset.type === t));
             mediaField.style.display = (t === 'multimidia') ? 'block' : 'none';
