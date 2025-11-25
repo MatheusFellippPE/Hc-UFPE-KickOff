@@ -81,7 +81,7 @@ form#novo-post-form textarea {
     padding: 60px;
     gap: 10px;
     box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.2);
-    margin-bottom: 40px;
+    margin-bottom: 0; /* remove o espaço entre o post e seus botões */
 }
 
 .post h2 {
@@ -239,4 +239,78 @@ footer {
 @media (max-width:720px) {
     #novo-post-form .tags-box { gap:.5rem; }
     #novo-post-form .actions { flex-direction:column; align-items:stretch; }
+}
+
+/* Galeria de imagens (1, 2 ou 3) */
+.post .media.gallery { gap: .5rem; margin-top: .5rem; }
+.post .media.gallery.layout-1 .media-item img { width: 100%; height: auto; display: block; }
+.post .media.gallery.layout-2,
+.post .media.gallery.layout-3 { display: grid; }
+.post .media.gallery.layout-2 { grid-template-columns: 1fr 1fr; }
+/* 3 imagens: 1 principal à esquerda, 2 empilhadas à direita */
+.post .media.gallery.layout-3 { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+.post .media.gallery.layout-3 .media-item:first-child { grid-row: 1 / span 2; }
+.post .media.gallery.layout-2 .media-item,
+.post .media.gallery.layout-3 .media-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.post .media.gallery img,
+.post .media.gallery video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+@media (max-width: 640px) {
+    .post .media.gallery.layout-3 { grid-template-columns: 1.5fr 1fr; }
+}
+
+/* Espaçamento entre posts passa a ser da barra de reações do post de cima */
+.post-wrapper {
+    margin-bottom: 0; /* antes: 7.75rem */
+}
+
+/* Barra de reações externa */
+.post-reactions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 60px;        /* alinhado ao padding do .post */
+    margin-top: 16px;         /* respiro entre post e botões */
+    padding-top: 0;          /* remove espaço interno acima */
+    padding-bottom: 0;
+    margin-bottom: 7.75rem;  /* novo: espaço pertence ao post acima */
+}
+
+/* Evitar espaço extra no último post */
+#posts .post-wrapper:last-of-type .post-reactions {
+    margin-bottom: 0;
+}
+
+/* Botões da barra de reações com padrão azul do projeto */
+.post-reactions button {
+    background-color: var(--cor-azul);
+    color: var(--cor-branco);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .95rem;
+    padding: 10px 18px;
+    border-radius: 35px;      /* igual ao padrão global */
+    transition: filter .15s;
+}
+.post-reactions button:hover { filter: brightness(.9); }
+/* Estado ativo: leve destaque */
+.post-reactions button.active { filter: brightness(.95); }
+
+.post-reactions img {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
