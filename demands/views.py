@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Demand, Post, Tag, PostMedia
+from django.http import JsonResponse, HttpResponseBadRequest
+from .models import Demand, Post, Tag, PostMedia, PostReaction
+from django.views.decorators.http import require_POST
+from django.db.models import Count, Q  # added
 
 @login_required
 def list_create_demands(request):
@@ -49,5 +52,53 @@ def hub_forum(request):
         return redirect("hub")
 
     tags = Tag.objects.using("demands").all().order_by("name")
-    posts = Post.objects.using("demands").all().prefetch_related("tags", "media")
-    return render(request, "hub.html", {"posts": posts, "tags": tags})
+    posts = (
+        Post.objects.using("demands")
+        .all()
+        .prefetch_related("tags", "media")
+        .annotate(
+            likes_count=Count("reactions", filter=Q(reactions__value=PostReaction.LIKE)),
+            dislikes_count=Count("reactions", filter=Q(reactions__value=PostReaction.DISLIKE)),
+        )
+    )
+    user_reactions = {}
+    if request.user.is_authenticated:
+        reactions = PostReaction.objects.using("demands").filter(user=request.user, post__in=[p.id for p in posts])
+        user_reactions = {r.post_id: r.value for r in reactions}
+
+    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions})
+
+@require_POST
+@login_required
+def react_post(request, post_id):
+    try:
+        value = int(request.POST.get("value"))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest("Valor inválido")
+    if value not in (PostReaction.LIKE, PostReaction.DISLIKE):
+        return HttpResponseBadRequest("Valor inválido")
+
+    try:
+        post = Post.objects.using("demands").get(pk=post_id)
+    except Post.DoesNotExist:
+        return HttpResponseBadRequest("Post não encontrado")
+
+    reaction, created = PostReaction.objects.using("demands").get_or_create(post=post, user=request.user, defaults={"value": value})
+    if not created:
+        # toggle or change
+        if reaction.value == value:
+            # remove reaction (toggle off)
+            reaction.delete()
+            current_value = 0
+        else:
+            reaction.value = value
+            reaction.save(using="demands")
+            current_value = value
+    else:
+        current_value = value
+
+    # counts
+    likes = PostReaction.objects.using("demands").filter(post=post, value=PostReaction.LIKE).count()
+    dislikes = PostReaction.objects.using("demands").filter(post=post, value=PostReaction.DISLIKE).count()
+
+    return JsonResponse({"likes": likes, "dislikes": dislikes, "current": current_value})

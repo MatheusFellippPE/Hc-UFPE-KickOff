@@ -1,0 +1,79 @@
+@import url("variables.css");
+
+main {
+    display: flex;
+    gap: 60px;
+
+    & h1 {
+        text-align: center;
+    }
+
+    & .header-secun {
+        display: inherit;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 60px;
+    }
+}
+
+form {
+    display: flex;
+    gap: 60px;
+
+    & .input-titulo input, textarea, select {
+        border: 2px solid var(--cor-azul);    
+    }
+}
+
+select {
+    border-radius: 10px;
+}
+
+textarea {
+    border-radius: 5px;
+    width: 1204px;
+    height: 333px;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 35px;
+    padding: 60px;
+    gap: 10px;
+    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+
+    & h2 {
+        font-weight: bold;
+    }
+}
+
+button {
+    background-color: var(--cor-azul);
+    color: var(--cor-branco);
+    border: none;
+    border-radius: 35px;
+    padding: 10px;
+}
+
+#novo-post-btn, #btn-nova {
+    width: 172px;
+    height: 51px;
+}
+
+.like-count, .dislike-count {
+    color: var(--cor-branco);
+}
+
+.btn-salvar, .btn-enviar, .btn-cancelar {
+    width: 155px;
+    height: 50px;
+}
+
+footer {
+    margin-top: 60px;
+    text-align: center;
+    justify-content: center;
+}

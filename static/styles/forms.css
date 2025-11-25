@@ -1,24 +1,52 @@
 @import url("variables.css");
 
-body {
-    display: flex;
+boby {
     justify-content: center;
+    align-items: center;
+    width: 100vw;
+}
+
+.formulario {
+    display: inherit;
+    flex-direction: row;
+    background-color: #FFFFFF;
+    box-shadow: 0 11px 9.78px 2px rgba(0, 0, 0, 0.2);
+    width: 1050px;
+    height: auto;
+    border-radius: 35px;
 }
 
 a {
     color: var(--cor-azul);
 }
 
-.formulario {
+form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 32px;
     text-align: center;
+    padding: 20px;
 
     & input, select {
         border: 2px solid var(--cor-verde);
         border-radius: 32px;
         padding: 10px 10px 10px 16px;
+    }
+
+    & button {
+        background-color: var(--cor-verde);
+        border: none;
+        border-radius: 35px;
+        width: 172px;
+        height: 51px;
+        color: var(--cor-branco);
+    }
+
+    .inputs {
+        display: inherit;
+        flex-direction: column;
+        gap: 10px;
     }
 }

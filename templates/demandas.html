@@ -7,6 +7,7 @@
     <title>Demandas</title>
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/hub.css' %}">
 </head>
 
 <body>
@@ -34,14 +35,16 @@
         </nav>
     </header>
     <main>
-        <h1>Demandas</h1>
-        <button id="btn-nova">Nova Demanda</button>
+        <div class="header-secun">
+            <h1>Demandas</h1>
+            <button id="btn-nova">Nova Demanda</button>
+        </div>
 
         <form id="form-nova" method="post" action="{% url 'demandas' %}" style="display:none; margin-top:16px;">
             {% csrf_token %}
-            <div>
+            <div class="input-titulo">
                 <label>Título</label>
-                <input type="text" name="title" required />
+                <input type="text" name="title" placeholder="Título" required />
             </div>
             <div>
                 <label>Descrição</label>
@@ -56,7 +59,7 @@
                     <option value="concluida">Concluída</option>
                 </select>
             </div>
-            <button type="submit">Salvar</button>
+            <button class="btn-salvar" type="submit">Salvar</button>
         </form>
 
         <hr />
