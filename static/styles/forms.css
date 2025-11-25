@@ -1,13 +1,13 @@
 @import url("variables.css");
 
 boby {
+    display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
 }
 
 .formulario {
-    display: inherit;
+    display: flex;
     flex-direction: row;
     background-color: #FFFFFF;
     box-shadow: 0 11px 9.78px 2px rgba(0, 0, 0, 0.2);

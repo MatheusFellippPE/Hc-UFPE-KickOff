@@ -3,11 +3,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
   <title>Login</title>
 </head>
 <body>
-  <h1>Login</h1>
-
 <div class="formulario">
     {% if form.non_field_errors %}
       <div>
