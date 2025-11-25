@@ -1,38 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Syne:wght@400;500;600&display=swap");
 @import url("variables.css");
 
-main {
-    display: flex;
-    gap: 60px;
-
-    & h1 {
-        text-align: center;
-    }
-
-    & .header-secun {
-        display: inherit;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: 60px;
-    }
+/* Fontes gerais */
+body, button, input, textarea, select {
+    font-family: 'Syne', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
 }
 
+/* MAIN: remover '&' e alinhar em coluna */
+main {
+    display: flex;
+    flex-direction: column; /* antes só display:flex com gap gerando layout quebrado */
+    gap: 60px;
+}
+main h1 {
+    text-align: center;
+}
+main .header-secun {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 60px;
+}
+
+/* FORM GLOBAL: não aplicar ao novo formulário */
 form {
     display: flex;
     gap: 60px;
-
-    & .input-titulo input, textarea, select {
-        border: 2px solid var(--cor-azul);    
-    }
+}
+form#novo-post-form {
+    display: block;         /* força layout vertical no novo formulário */
+    gap: 0;
 }
 
-select {
-    border-radius: 10px;
+/* SUBSTITUIR regra que adicionava borda 2px nos campos internos */
+form#novo-post-form .input-titulo input,
+form#novo-post-form textarea,
+form#novo-post-form select,
+form#novo-post-form input[type="url"] {
+    border: none !important;
+    box-shadow: none;
+    padding: .35rem .6rem;
+    background:#fff;
+    box-sizing: border-box;
 }
 
+/* Garantir que regras posteriores não reintroduzam borda */
+#novo-post-form input[type="text"],
+#novo-post-form input[type="url"],
+#novo-post-form textarea {
+    border: none !important;
+    background:#fff;
+}
+
+/* Evitar que textarea global sobreponha o do formulário novo */
 textarea {
     border-radius: 5px;
-    width: 1204px;
-    height: 333px;
+    /* REMOVIDO width/height fixos que quebravam dentro do novo formulário */
+}
+form#novo-post-form textarea {
+    width: 100%;
+    min-height: 260px;
+    height: auto;
+    resize: vertical;
+}
+
+#novo-post-form input::placeholder,
+#novo-post-form textarea::placeholder {
+    color:#888;
+    opacity:1;
 }
 
 .post {
@@ -44,10 +82,10 @@ textarea {
     gap: 10px;
     box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.2);
     margin-bottom: 40px;
+}
 
-    & h2 {
-        font-weight: bold;
-    }
+.post h2 {
+    font-weight: 600;
 }
 
 button {
@@ -76,4 +114,129 @@ footer {
     margin-top: 60px;
     text-align: center;
     justify-content: center;
+}
+
+/* Formulário Hub custom */
+#novo-post-form {
+    border-radius:14px;
+    padding:0;
+    background:#f5f6f8;
+}
+
+#novo-post-form .post-type-tabs {
+    display:flex;
+    gap:1rem;
+    padding:1rem 1.25rem 0;
+    margin-bottom:.9rem;
+}
+
+#novo-post-form .post-type-tabs button {
+    flex:0 0 auto;
+    background:#38a5c8;
+    color:#fff;
+    border:none;
+    padding:.7rem 2.2rem;
+    border-radius:26px;
+    cursor:pointer;
+    font-weight:600;
+    letter-spacing:.5px;
+    transition:.2s;
+}
+
+#novo-post-form .post-type-tabs button.active {
+    background:#1f83a3;
+    box-shadow:0 0 0 2px #1f83a3 inset;
+}
+
+#novo-post-form .form-section {
+    margin:0 1.25rem;
+    padding:.85rem 1rem;
+    border:1px solid #5bb0c9;
+    border-radius:26px;
+    background:#fff;
+    position:relative;
+}
+
+#novo-post-form .form-section + .form-section {
+    margin-top:.9rem;
+}
+
+#novo-post-form label {
+    display:block;
+    font-size:.85rem;
+    font-weight:600;
+    margin-bottom:.35rem;
+    color:#444;
+}
+
+#novo-post-form input[type="text"],
+#novo-post-form input[type="url"],
+#novo-post-form textarea {
+    width:100%;
+    border:none;
+    outline:none;
+    font:inherit;
+    font-size:.95rem;
+    background:transparent;
+}
+
+#novo-post-form textarea {
+    min-height:260px;
+    resize:vertical;
+}
+
+#novo-post-form .tags-box {
+    display:flex;
+    flex-wrap:wrap;
+    gap:.75rem;
+    width: 100%;
+}
+
+#novo-post-form .tag-option {
+    display:flex;
+    align-items:center;
+    gap:.35rem;
+    font-size:.75rem;
+    background:#fff;
+}
+
+#novo-post-form .tag-option input {
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+
+#novo-post-form .tag-option span {
+    color:#000;
+    font-family:'Syne', sans-serif;
+}
+
+#novo-post-form .actions {
+    display:flex;
+    justify-content:flex-end;
+    gap:1.25rem;
+    padding:1rem 1.25rem 1.4rem;
+}
+
+#novo-post-form .actions button {
+    background:#38a5c8;
+    color:#fff;
+    border:none;
+    padding:.75rem 2.3rem;
+    border-radius:26px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+#novo-post-form .actions button.btn-draft {
+    background:#2d96b7;
+}
+
+#novo-post-form .actions button:hover {
+    filter:brightness(.9);
+}
+
+@media (max-width:720px) {
+    #novo-post-form .tags-box { gap:.5rem; }
+    #novo-post-form .actions { flex-direction:column; align-items:stretch; }
 }

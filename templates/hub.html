@@ -2,6 +2,7 @@
 {% load demands_extras %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Hub</title>
@@ -9,152 +10,185 @@
     <link rel="stylesheet" href="{% static 'styles/header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/hub.css' %}">
 </head>
+
 <body>
-<header>
-    <div class="logo">
-        <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo HC-UFPE">
-        <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo Ebserh">
-    </div>
-    <nav class="navegacao">
-        <a href="{% url 'landing' %}">Início</a>
-        <a href="{% url 'sobre_nos' %}">Sobre nós</a>
-        <a href="{% url 'home' %}">Serviços</a>
-        <a href="{% url 'demandas' %}">Demandas</a>
-        <a href="{% url 'hub' %}">Hub</a>
-        {% if user.is_authenticated %}
+    <header>
+        <div class="logo">
+            <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo HC-UFPE">
+            <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo Ebserh">
+        </div>
+        <nav class="navegacao">
+            <a href="{% url 'landing' %}">Início</a>
+            <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+            <a href="{% url 'home' %}">Serviços</a>
+            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="{% url 'hub' %}">Hub</a>
+            {% if user.is_authenticated %}
             <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.path }}" />
                 <button type="submit" class="botao-entrar" style="background:none;border:none;cursor:pointer;">Sair ({{ user.first_name|default:user.username }})</button>
             </form>
-        {% else %}
+            {% else %}
             <a href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}" class="botao-entrar">Entrar</a>
-        {% endif %}
-    </nav>
-</header>
-<main>
-    <div class="header-secun">
-        <h1>Hub de Inovação</h1>
-        <!-- botão novo post -->
-        <button id="novo-post-btn">Novo post</button>
-    </div>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        <div class="header-secun">
+            <!-- <h1>Hub de Inovação</h1> -->
+            <!-- botão novo post -->
+            <button id="novo-post-btn">Novo post</button>
+        </div>
 
-    <!-- formulário oculto que envia para a mesma view hub_forum -->
-    <form id="novo-post-form" action="{% url 'hub' %}" method="post" enctype="multipart/form-data" style="display:none; margin-top:1rem;">
-        {% csrf_token %}
-        <div class="input-titulo">
-            <label for="title">Título</label>
-            <input type="text" id="title" name="title" maxlength="200" placeholder="Título" required>
-        </div>
-        <div class="seletor-tags">
-            <label for="tags">Tags (segure Ctrl/Cmd para multiseleção)</label>
-            <select id="tags" name="tags" multiple>
-                {% for tag in tags %}
-                    <option value="{{ tag.name }}">{{ tag.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="input-texto">
-            <label for="body">Texto</label>
-            <textarea id="body" name="body" rows="6" required></textarea>
-        </div>
-        <div class="input-media">
-            <label for="media">Fotos/Vídeos (vários permitidos)</label>
-            <input id="media" name="media" type="file" multiple accept="image/*,video/*">
-        </div>
-        <div>
-            <button class="btn-enviar" type="submit">Enviar</button>
-            <button class="btn-cancelar" type="button" id="cancel-btn">Cancelar</button>
-        </div>
-    </form>
+        <!-- formulário oculto que envia para a mesma view hub_forum -->
+        <form id="novo-post-form" action="{% url 'hub' %}" method="post" enctype="multipart/form-data" style="display:none; margin-top:1rem;">
+            {% csrf_token %}
+            <input type="hidden" name="post_type" id="post_type" value="texto">
+            <div class="post-type-tabs">
+                <button type="button" data-type="texto" class="active">Texto</button>
+                <button type="button" data-type="multimidia">Multimidia</button>
+                <button type="button" data-type="link">Link</button>
+            </div>
 
-    <!-- lista de posts -->
-    <section id="posts">
-        {% for post in posts %}
+            <div class="form-section input-titulo">
+                <input type="text" id="title" name="title" maxlength="200" placeholder="Título" required>
+            </div>
+
+            <div class="form-section seletor-tags">
+                <label>Tags</label>
+                <div class="tags-box">
+                    {% for tag in tags %}
+                    <label class="tag-option">
+                        <input type="checkbox" name="tags" value="{{ tag.name }}">
+                        <span>{{ tag.name }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-section input-texto">
+                <textarea id="body" name="body" placeholder="Escreva aqui..."></textarea>
+            </div>
+
+            <div class="form-section input-media" style="display:none;">
+                <label for="media">Fotos/Vídeos</label>
+                <input id="media" name="media" type="file" multiple accept="image/*,video/*">
+            </div>
+
+            <div class="form-section input-link" style="display:none;">
+                <input type="url" id="link_url" name="link_url" placeholder="https://">
+            </div>
+
+            <div class="actions">
+                <button class="btn-draft" type="submit" name="action" value="draft">Salvar rascunho</button>
+                <button class="btn-publish" type="submit" name="action" value="publish">Postar</button>
+                <button class="btn-cancelar" type="button" id="cancel-btn" style="background:#aaa;">Cancelar</button>
+            </div>
+        </form>
+
+        <!-- lista de posts -->
+        <section id="posts">
+            {% for post in posts %}
             <article class="post" data-post-id="{{ post.id }}">
                 <h2>{{ post.title }}</h2>
                 <p class="meta">por {% if post.author %}{{ post.author.first_name|default:post.author.username }}{% else %}Anônimo{% endif %} - {{ post.created_at }}</p>
                 <div class="tags">
                     {% for t in post.tags.all %}
-                        <span class="tag">{{ t.name }}</span>
+                    <span class="tag">{{ t.name }}</span>
                     {% endfor %}
                 </div>
                 <div class="body">{{ post.body|linebreaks }}</div>
                 <div class="media">
                     {% for m in post.media.all %}
-                        {% if m.file.url %}
-                            <div class="media-item">
-                                {% if m.file.url|slice:"-4:" in ".jpg.png.gif.jpeg.webm.mp4" %}
-                                    <img src="{{ m.file.url }}" alt="media" style="max-width:300px;">
-                                {% else %}
-                                    <a href="{{ m.file.url }}">Download</a>
-                                {% endif %}
-                            </div>
+                    {% if m.file.url %}
+                    <div class="media-item">
+                        {% if m.file.url|slice:"-4:" in ".jpg.png.gif.jpeg.webm.mp4" %}
+                        <img src="{{ m.file.url }}" alt="media" style="max-width:300px;">
+                        {% else %}
+                        <a href="{{ m.file.url }}">Download</a>
                         {% endif %}
+                    </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
                 <div class="reactions">
                     {% if user.is_authenticated %}
-                        {% with user_reactions|get_item:post.id as my_reaction %}
-                        <button class="like-btn {% if my_reaction == 1 %}active{% endif %}" data-value="1">👍 <span class="like-count">{{ post.likes_count }}</span></button>
-                        <button class="dislike-btn {% if my_reaction == -1 %}active{% endif %}" data-value="-1">👎 <span class="dislike-count">{{ post.dislikes_count }}</span></button>
-                        {% endwith %}
+                    {% with user_reactions|get_item:post.id as my_reaction %}
+                    <button class="like-btn {% if my_reaction == 1 %}active{% endif %}" data-value="1">👍 <span class="like-count">{{ post.likes_count }}</span></button>
+                    <button class="dislike-btn {% if my_reaction == -1 %}active{% endif %}" data-value="-1">👎 <span class="dislike-count">{{ post.dislikes_count }}</span></button>
+                    {% endwith %}
                     {% else %}
-                        <span>👍 {{ post.likes_count }} | 👎 {{ post.dislikes_count }} (faça login para reagir)</span>
+                    <span>👍 {{ post.likes_count }} | 👎 {{ post.dislikes_count }} (faça login para reagir)</span>
                     {% endif %}
                 </div>
             </article>
-        {% empty %}
+            {% empty %}
             <p>Sem posts ainda.</p>
-        {% endfor %}
-    </section>
+            {% endfor %}
+        </section>
 
-</main>
-<footer>
-    <p>&copy; HC-UFPE</p>
-</footer>
+    </main>
+    <footer>
+        <p>&copy; HC-UFPE</p>
+    </footer>
 
-<script>
-    // JS mínimo para mostrar/ocultar o formulário sem trabalhar o front-end
-    const novoBtn = document.getElementById('novo-post-btn');
-    const form = document.getElementById('novo-post-form');
-    const cancelBtn = document.getElementById('cancel-btn');
-    novoBtn.addEventListener('click', () => form.style.display = 'block');
-    cancelBtn.addEventListener('click', () => form.style.display = 'none');
+    <script>
+        // JS mínimo para mostrar/ocultar o formulário sem trabalhar o front-end
+        const novoBtn = document.getElementById('novo-post-btn');
+        const form = document.getElementById('novo-post-form');
+        const cancelBtn = document.getElementById('cancel-btn');
+        novoBtn.addEventListener('click', () => form.style.display = 'block');
+        cancelBtn.addEventListener('click', () => form.style.display = 'none');
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-    const csrftoken = getCookie('csrftoken');
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const csrftoken = getCookie('csrftoken');
 
-    document.querySelectorAll('.post').forEach(postEl => {
-        const postId = postEl.getAttribute('data-post-id');
-        postEl.querySelectorAll('.like-btn, .dislike-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const value = btn.getAttribute('data-value');
-                fetch(`/hub/react/${postId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrftoken,
-                    },
-                    body: `value=${value}`
-                }).then(r => r.json()).then(data => {
-                    postEl.querySelector('.like-count').textContent = data.likes;
-                    postEl.querySelector('.dislike-count').textContent = data.dislikes;
-                    // atualizar classes active
-                    postEl.querySelectorAll('.like-btn, .dislike-btn').forEach(b => b.classList.remove('active'));
-                    if (data.current === 1) {
-                        postEl.querySelector('.like-btn').classList.add('active');
-                    } else if (data.current === -1) {
-                        postEl.querySelector('.dislike-btn').classList.add('active');
-                    }
-                }).catch(err => console.error(err));
+        document.querySelectorAll('.post').forEach(postEl => {
+            const postId = postEl.getAttribute('data-post-id');
+            postEl.querySelectorAll('.like-btn, .dislike-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const value = btn.getAttribute('data-value');
+                    fetch(`/hub/react/${postId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: `value=${value}`
+                    }).then(r => r.json()).then(data => {
+                        postEl.querySelector('.like-count').textContent = data.likes;
+                        postEl.querySelector('.dislike-count').textContent = data.dislikes;
+                        // atualizar classes active
+                        postEl.querySelectorAll('.like-btn, .dislike-btn').forEach(b => b.classList.remove('active'));
+                        if (data.current === 1) {
+                            postEl.querySelector('.like-btn').classList.add('active');
+                        } else if (data.current === -1) {
+                            postEl.querySelector('.dislike-btn').classList.add('active');
+                        }
+                    }).catch(err => console.error(err));
+                });
             });
         });
-    });
-</script>
+
+        // Controle de abas tipo de post (removido uso de 'separators')
+        const postTypeInput = document.getElementById('post_type');
+        const tabs = document.querySelectorAll('.post-type-tabs button');
+        const mediaField = document.querySelector('.input-media');
+        const linkField = document.querySelector('.input-link');
+
+        function setType(t){
+            postTypeInput.value = t;
+            tabs.forEach(b => b.classList.toggle('active', b.dataset.type === t));
+            mediaField.style.display = (t === 'multimidia') ? 'block' : 'none';
+            linkField.style.display = (t === 'link') ? 'block' : 'none';
+        }
+        tabs.forEach(b => b.addEventListener('click', () => setType(b.dataset.type)));
+    </script>
 </body>
+
 </html>
