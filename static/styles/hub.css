@@ -314,3 +314,25 @@ footer {
     height: 18px;
     display: block;
 }
+
+.post .comments {
+    width:75%;
+    margin:0.75rem auto 0; /* centraliza dentro do post */
+    padding:0.5rem 0.75rem;
+    box-sizing:border-box;
+}
+.post .comments .comment-item {
+    background:#f1f5f7;
+    border-radius:12px;
+    padding:.55rem .9rem;
+    font-size:.9rem;
+    line-height:1.35rem;
+    color:#222;
+}
+.post .comments .comment-item strong {
+    display:inline-block;
+    margin-right:.4rem;
+    color:#0b4d63;
+    font-weight:600;
+}
+.post .comments .comment-empty { font-style:italic; opacity:.7; }

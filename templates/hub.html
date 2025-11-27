@@ -100,21 +100,12 @@
                         {% endfor %}
                     </div>
                     <div class="body">{{ post.body|linebreaks }}</div>
-                    <div class="media">
-                        {% for m in post.media.all %}
-                        {% if m.file.url %}
-                        {% with url=m.file.url|lower ext4=url|slice:"-4:" ext5=url|slice:"-5:" %}
-                        <div class="media-item {% if ext4 == '.jpg' or ext5 == '.jpeg' or ext4 == '.png' or ext4 == '.gif' or ext4 == '.webp' %}is-image{% elif ext4 == '.mp4' or ext4 == '.ogg' or ext4 == 'webm' %}is-video{% endif %}">
-                            {% if ext4 == '.jpg' or ext5 == '.jpeg' or ext4 == '.png' or ext4 == '.gif' or ext4 == '.webp' %}
-                            <img src="{{ m.file.url }}" alt="media">
-                            {% elif ext4 == '.mp4' or ext4 == '.ogg' or ext4 == 'webm' %}
-                            <video src="{{ m.file.url }}" controls playsinline></video>
-                            {% else %}
-                            <a href="{{ m.file.url }}">Download</a>
-                            {% endif %}
-                        </div>
-                        {% endwith %}
-                        {% endif %}
+                    <!-- Bloco de comentários movido para logo após o corpo -->
+                    <div class="comments" id="comments-{{ post.id }}" style="margin-top:0.75rem;">
+                        {% for c in post.comments.all %}
+                            <div class="comment-item"><strong>{{ c.author_name }}</strong>: {{ c.body|linebreaksbr }}</div>
+                        {% empty %}
+                            <div class="comment-empty">Sem comentários.</div>
                         {% endfor %}
                     </div>
                 </article>
@@ -128,13 +119,6 @@
                     {% else %}
                     <span>👍 {{ post.likes_count }} | 👎 {{ post.dislikes_count }} (faça login para reagir)</span>
                     {% endif %}
-                </div>
-                <div class="comments" id="comments-{{ post.id }}">
-                    {% for c in post.comments.all %}
-                    <div class="comment-item"><strong>{{ c.author_name }}</strong>: {{ c.body }}</div>
-                    {% empty %}
-                    <div class="comment-empty">Sem comentários.</div>
-                    {% endfor %}
                 </div>
                 {% if user.is_authenticated %}
                 <div class="comment-form" id="comment-form-{{ post.id }}" style="display:none; margin-top:0.5rem;">

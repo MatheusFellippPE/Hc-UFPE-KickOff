@@ -55,7 +55,7 @@ def hub_forum(request):
     posts = (
         Post.objects.using("demands")
         .all()
-        .prefetch_related("tags", "media")
+        .prefetch_related("tags", "media", "comments")  # removido comments__author (cross-db quebra autor)
         .annotate(
             likes_count=Count("reactions", filter=Q(reactions__value=PostReaction.LIKE)),
             dislikes_count=Count("reactions", filter=Q(reactions__value=PostReaction.DISLIKE)),
