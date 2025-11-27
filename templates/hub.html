@@ -27,7 +27,7 @@
             <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.path }}" />
-                <button type="submit" class="botao-entrar" style="background:none;border:none;cursor:pointer;">Sair ({{ user.first_name|default:user.username }})</button>
+                <button type="submit" class="botao-entrar" style="background:none;border:none;cursor:pointer;">Sair</button>
             </form>
             {% else %}
             <a href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}" class="botao-entrar">Entrar</a>
@@ -90,7 +90,7 @@
         <!-- lista de posts -->
         <section id="posts">
             {% for post in posts %}
-            <div class="post-wrapper">
+            <div class="post-wrapper" data-post-id="{{ post.id }}">
                 <article class="post" data-post-id="{{ post.id }}">
                     <h2>{{ post.title }}</h2>
                     <p class="meta">por {% if post.author %}{{ post.author.first_name|default:post.author.username }}{% else %}Anônimo{% endif %} - {{ post.created_at }}</p>
@@ -123,14 +123,30 @@
                     {% with user_reactions|get_item:post.id as my_reaction %}
                     <button class="like-btn {% if my_reaction == 1 %}active{% endif %}" data-value="1">👍 <span class="like-count">{{ post.likes_count }}</span></button>
                     <button class="dislike-btn {% if my_reaction == -1 %}active{% endif %}" data-value="-1">👎 <span class="dislike-count">{{ post.dislikes_count }}</span></button>
-                    <button class="comment-btn" data-action="comment" title="Comentar">
-                        <img src="{% static 'src/comentario.svg' %}" alt="Comentar">
-                    </button>
+                    <button class="comment-btn" data-action="comment" title="Comentar">Comentar</button>
                     {% endwith %}
                     {% else %}
                     <span>👍 {{ post.likes_count }} | 👎 {{ post.dislikes_count }} (faça login para reagir)</span>
                     {% endif %}
                 </div>
+                <div class="comments" id="comments-{{ post.id }}">
+                    {% for c in post.comments.all %}
+                    <div class="comment-item"><strong>{{ c.author_name }}</strong>: {{ c.body }}</div>
+                    {% empty %}
+                    <div class="comment-empty">Sem comentários.</div>
+                    {% endfor %}
+                </div>
+                {% if user.is_authenticated %}
+                <div class="comment-form" id="comment-form-{{ post.id }}" style="display:none; margin-top:0.5rem;">
+                    <form>
+                        <textarea name="body" rows="3" style="width:100%;" placeholder="Seu comentário..."></textarea>
+                        <div>
+                            <button type="button" class="comment-send" data-post-id="{{ post.id }}">Enviar</button>
+                            <button type="button" class="comment-cancel" data-post-id="{{ post.id }}">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
             </div>
             {% empty %}
             <p>Sem posts ainda.</p>
@@ -183,8 +199,10 @@
             });
             const commentBtn = bar.querySelector('.comment-btn');
             if (commentBtn) {
+                // Substitui alerta antigo por exibir formulário de comentário
                 commentBtn.addEventListener('click', () => {
-                    alert('Área de comentários em desenvolvimento.');
+                    const form = document.getElementById('comment-form-' + postId);
+                    if (form) form.style.display = 'block';
                 });
             }
         });
@@ -220,8 +238,51 @@
             const count = Math.min(items.length, 3);
             container.classList.add(`layout-${count}`);
         });
+
+        document.querySelectorAll('.comment-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const postId = btn.closest('.post-wrapper').getAttribute('data-post-id');
+                const form = document.getElementById('comment-form-' + postId);
+                if (form) form.style.display = 'block';
+            });
+        });
+
+        document.querySelectorAll('.comment-cancel').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const postId = btn.getAttribute('data-post-id');
+                const form = document.getElementById('comment-form-' + postId);
+                if (form) form.style.display = 'none';
+            });
+        });
+
+        document.querySelectorAll('.comment-send').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const postId = btn.getAttribute('data-post-id');
+                const form = document.getElementById('comment-form-' + postId);
+                const textarea = form.querySelector('textarea[name="body"]');
+                const body = textarea.value.trim();
+                if (!body) return;
+                fetch(`/hub/comment/${postId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: `body=${encodeURIComponent(body)}`
+                }).then(r => r.json()).then(data => {
+                    const list = document.getElementById('comments-' + postId);
+                    const empty = list.querySelector('.comment-empty');
+                    if (empty) empty.remove();
+                    const div = document.createElement('div');
+                    div.className = 'comment-item';
+                    div.innerHTML = `<strong>${data.author}</strong>: ${data.body}`;
+                    list.appendChild(div);
+                    textarea.value='';
+                    form.style.display='none';
+                }).catch(err => console.error(err));
+            });
+        });
     </script>
 </body>
 
 </html>
-```

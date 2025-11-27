@@ -108,3 +108,23 @@ class PostReaction(models.Model):
 
     def __str__(self):
         return f"Reaction({self.get_value_display()}) by {self.user_id} on {self.post_id}"
+
+
+class PostComment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="post_comments", db_constraint=False)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "demandas_postcomment"
+        ordering = ["created_at"]
+
+    def author_name(self):
+        if self.author:
+            return getattr(self.author, "first_name", None) or getattr(self.author, "username", str(self.author))
+            
+        return "Anônimo"
+
+    def __str__(self):
+        return f"Comment by {self.author_id} on {self.post_id}"

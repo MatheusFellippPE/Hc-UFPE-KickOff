@@ -20,10 +20,9 @@
             <a href="{% url 'landing' %}">Início</a>
             <a href="{% url 'sobre_nos' %}">Sobre nós</a>
             <a href="{% url 'home' %}">Serviços</a>
-            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="#">Artigos</a>
             <a href="{% url 'hub' %}">Hub</a>
             {% if user.is_authenticated %}
-            <span class="usuario-logado">Olá, {{ user.get_full_name|default:user.username }}</span>
             <form id="logout-form" method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{% url 'landing' %}">

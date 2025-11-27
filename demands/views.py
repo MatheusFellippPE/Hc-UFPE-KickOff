@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
-from .models import Demand, Post, Tag, PostMedia, PostReaction
+from .models import Demand, Post, Tag, PostMedia, PostReaction, PostComment
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q  # added
 
@@ -66,7 +66,8 @@ def hub_forum(request):
         reactions = PostReaction.objects.using("demands").filter(user=request.user, post__in=[p.id for p in posts])
         user_reactions = {r.post_id: r.value for r in reactions}
 
-    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions})
+    comments = PostComment.objects.using("demands").all().select_related("author")
+    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions, "comments": comments})
 
 @require_POST
 @login_required
@@ -102,3 +103,21 @@ def react_post(request, post_id):
     dislikes = PostReaction.objects.using("demands").filter(post=post, value=PostReaction.DISLIKE).count()
 
     return JsonResponse({"likes": likes, "dislikes": dislikes, "current": current_value})
+
+@require_POST
+@login_required
+def comment_post(request, post_id):
+    body = request.POST.get("body", "").strip()
+    if not body:
+        return HttpResponseBadRequest("Comentário vazio")
+    try:
+        post = Post.objects.using("demands").get(pk=post_id)
+    except Post.DoesNotExist:
+        return HttpResponseBadRequest("Post não encontrado")
+    comment = PostComment.objects.using("demands").create(post=post, author=request.user, body=body)
+    return JsonResponse({
+        "id": comment.id,
+        "author": comment.author_name(),
+        "body": comment.body,
+        "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M"),
+    })
