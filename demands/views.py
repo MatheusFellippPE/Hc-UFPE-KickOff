@@ -72,7 +72,11 @@ def hub_forum(request):
         reactions = PostReaction.objects.using("demands").filter(user=request.user, post__in=[p.id for p in posts])
         user_reactions = {r.post_id: r.value for r in reactions}
 
-    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions})
+    return render(request, "hub.html", {
+        "posts": posts,
+        "tags": tags,
+        "user_reactions": user_reactions,
+    })
 
 @require_POST
 @login_required

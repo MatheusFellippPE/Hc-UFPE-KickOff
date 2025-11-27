@@ -68,9 +68,18 @@ class Post(models.Model):
         db_table = "demandas_post"
         ordering = ["-created_at"]
 
+    @property
     def author_name(self):
         if self.author:
-            return getattr(self.author, "username", str(self.author))
+            return getattr(self.author, "first_name", None) or getattr(self.author, "username", str(self.author))
+        if self.author_id:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            try:
+                user = User.objects.using("default").get(pk=self.author_id)
+                return user.first_name or user.username
+            except User.DoesNotExist:
+                pass
         return "Anônimo"
 
     def __str__(self):
@@ -120,10 +129,11 @@ class PostComment(models.Model):
         db_table = "demandas_postcomment"
         ordering = ["created_at"]
 
+    @property
     def author_name(self):
         if self.author:
             return getattr(self.author, "first_name", None) or getattr(self.author, "username", str(self.author))
-        if self.author_id:  # tentar buscar manualmente no DB padrão
+        if self.author_id:
             from django.contrib.auth import get_user_model
             User = get_user_model()
             try:
