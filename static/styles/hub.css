@@ -316,18 +316,18 @@ footer {
 }
 
 .post .comments {
+    /* separação clara do conteúdo do post */
+    margin:2rem auto 0; /* mais espaço acima (entre post e primeiro comentário) */
+    padding-top:1rem; /* respiro interno antes da lista */
+    border-top:1px solid #d4dde0; /* linha divisória sutil */
     width:75%;
-    margin:0.75rem auto 0; /* centraliza dentro do post */
-    padding:0.5rem 0.75rem;
-    box-sizing:border-box;
+    max-width:75%;
 }
 .post .comments .comment-item {
-    background:#f1f5f7;
-    border-radius:12px;
-    padding:.55rem .9rem;
-    font-size:.9rem;
-    line-height:1.35rem;
-    color:#222;
+    /* drop shadow refinado e menos espaço entre itens */
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+    margin-bottom:.75rem; /* reduzido (≈12px) */
+    /* ...existing code... */
 }
 .post .comments .comment-item strong {
     display:inline-block;
