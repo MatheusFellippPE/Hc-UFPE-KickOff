@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from .models import Demand, Post, Tag, PostMedia, PostReaction, PostComment
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q  # added
+from django.db.models import Prefetch  # added
 
 @login_required
 def list_create_demands(request):
@@ -52,10 +53,15 @@ def hub_forum(request):
         return redirect("hub")
 
     tags = Tag.objects.using("demands").all().order_by("name")
+    comments_qs = PostComment.objects.using("demands").select_related("author").order_by("created_at")
     posts = (
         Post.objects.using("demands")
         .all()
-        .prefetch_related("tags", "media", "comments")  # removido comments__author (cross-db quebra autor)
+        .prefetch_related(
+            "tags",
+            "media",
+            Prefetch("comments", queryset=comments_qs),  # garante autor carregado
+        )
         .annotate(
             likes_count=Count("reactions", filter=Q(reactions__value=PostReaction.LIKE)),
             dislikes_count=Count("reactions", filter=Q(reactions__value=PostReaction.DISLIKE)),
@@ -66,8 +72,7 @@ def hub_forum(request):
         reactions = PostReaction.objects.using("demands").filter(user=request.user, post__in=[p.id for p in posts])
         user_reactions = {r.post_id: r.value for r in reactions}
 
-    comments = PostComment.objects.using("demands").all().select_related("author")
-    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions, "comments": comments})
+    return render(request, "hub.html", {"posts": posts, "tags": tags, "user_reactions": user_reactions})
 
 @require_POST
 @login_required
