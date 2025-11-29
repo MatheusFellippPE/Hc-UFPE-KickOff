@@ -218,11 +218,11 @@ py manage.py migrate
 
 ###
 
-<h3 align="left">5. Execução da Solução</h3>
+<h3 align="left">5. Execução do Hub HC-UFPE</h3>
 
 ###
 
-<p align="left">O passo final é iniciar o servidor de desenvolvimento para que a solução fique acessível.</p>
+<p align="left">O passo final é iniciar o servidor de desenvolvimento para que o Hub HC-UFPE fique acessível.</p>
 
 ###
 
@@ -244,7 +244,7 @@ py manage.py runserver
 
 ###
 
-<h2 align="left">🚀 Acesso à Solução</h2>
+<h2 align="left">🚀 Acesso ao Hub HC-UFPE</h2>
 
 ###
 
