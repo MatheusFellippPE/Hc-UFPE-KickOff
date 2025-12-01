@@ -4,7 +4,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key")
-DEBUG = os.getenv("DEBUG", "1") == "1"
+# DEBUG default: True local, False on Railway unless explicitly set
+_raw_debug = os.getenv("DEBUG")
+DEBUG = (_raw_debug == "1" or (_raw_debug or "").lower() in ("true","on","yes")) if _raw_debug is not None else True
+if os.getenv("RAILWAY_ENVIRONMENT"):
+    # If running on Railway and DEBUG not explicitly set, default to False
+    if _raw_debug is None:
+        DEBUG = False
 
 # Base from env, then extend with dev helpers when DEBUG
 _env_hosts = [h for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h]
@@ -17,11 +23,16 @@ if DEBUG:
         '.ngrok.io',
         '.ngrok-free.dev',
     ]
-# Fallback seguro para Railway quando não definir ALLOWED_HOSTS
-if not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = ['.up.railway.app']
+# Always allow Railway wildcard
+if '.up.railway.app' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.up.railway.app')
+# Include specific Railway domain if provided by env
+for var in ("RAILWAY_PUBLIC_DOMAIN", "RAILWAY_URL", "SITE_DOMAIN", "SITE_HOST"):
+    _dom = os.getenv(var)
+    if _dom and _dom not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(_dom)
 
-# CSRF trusted origins: use env or dev defaults
+# CSRF trusted origins: use env or dev defaults and include Railway
 _env_csrf = [o for o in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
 if _env_csrf:
     CSRF_TRUSTED_ORIGINS = _env_csrf
@@ -32,8 +43,18 @@ elif DEBUG:
         'https://*.ngrok-free.dev',
     ]
 else:
-    # Fallback para Railway em produção
-    CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
+    CSRF_TRUSTED_ORIGINS = []
+# Always include Railway wildcard and explicit domain in CSRF
+if 'https://*.up.railway.app' not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append('https://*.up.railway.app')
+for var in ("RAILWAY_PUBLIC_DOMAIN", "RAILWAY_URL", "SITE_DOMAIN", "SITE_HOST"):
+    _dom = os.getenv(var)
+    if _dom:
+        origin = _dom
+        if not origin.startswith('http'):
+            origin = f'https://{origin}'
+        if origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
