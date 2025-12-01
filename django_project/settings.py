@@ -5,7 +5,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key")
 DEBUG = os.getenv("DEBUG", "1") == "1"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+
+# Base from env, then extend with dev helpers when DEBUG
+_env_hosts = [h for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h]
+ALLOWED_HOSTS = _env_hosts.copy()
+if DEBUG:
+    ALLOWED_HOSTS += [
+        '127.0.0.1',
+        'localhost',
+        '.ngrok.app',
+        '.ngrok.io',
+        '.ngrok-free.dev',
+    ]
+
+# CSRF trusted origins: use env or dev defaults
+_env_csrf = [o for o in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+if _env_csrf:
+    CSRF_TRUSTED_ORIGINS = _env_csrf
+elif DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://*.ngrok.app',
+        'https://*.ngrok.io',
+        'https://*.ngrok-free.dev',
+    ]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -20,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # serve estáticos em produção
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -77,6 +100,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"  # usado por collectstatic em produção
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files (uploads)
 MEDIA_URL = "/media/"
@@ -107,8 +131,8 @@ CSRF_TRUSTED_ORIGINS = [
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # secure cookies when served over https
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
 
 # if you need cross-site requests (e.g. different domain hitting your site), set to 'None'
 # CSRF_COOKIE_SAMESITE = 'None'
