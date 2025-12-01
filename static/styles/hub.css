@@ -30,7 +30,7 @@ form {
     display: flex;
     gap: 60px;
 }
-form#novo-post-form {
+form#novo-post-form, form#form-nova {
     display: block;         /* força layout vertical no novo formulário */
     gap: 0;
 }
@@ -39,7 +39,10 @@ form#novo-post-form {
 form#novo-post-form .input-titulo input,
 form#novo-post-form textarea,
 form#novo-post-form select,
-form#novo-post-form input[type="url"] {
+form#novo-post-form input[type="url"],
+form#form-nova input,
+form#form-nova textarea,
+form#form-nova select {
     border: none !important;
     box-shadow: none;
     padding: .35rem .6rem;
@@ -50,7 +53,9 @@ form#novo-post-form input[type="url"] {
 /* Garantir que regras posteriores não reintroduzam borda */
 #novo-post-form input[type="text"],
 #novo-post-form input[type="url"],
-#novo-post-form textarea {
+#novo-post-form textarea,
+#form-nova input,
+#form-nova textarea {
     border: none !important;
     background:#fff;
 }
@@ -60,7 +65,7 @@ textarea {
     border-radius: 5px;
     /* REMOVIDO width/height fixos que quebravam dentro do novo formulário */
 }
-form#novo-post-form textarea {
+form#novo-post-form textarea, form#form-nova textarea {
     width: 100%;
     min-height: 260px;
     height: auto;
@@ -68,7 +73,9 @@ form#novo-post-form textarea {
 }
 
 #novo-post-form input::placeholder,
-#novo-post-form textarea::placeholder {
+#novo-post-form textarea::placeholder,
+#form-nova input::placeholder,
+#form-nova textarea::placeholder {
     color:#888;
     opacity:1;
 }
@@ -117,7 +124,7 @@ footer {
 }
 
 /* Formulário Hub custom */
-#novo-post-form {
+#novo-post-form, #form-nova {
     border-radius:14px;
     padding:0;
     background:#f5f6f8;
@@ -148,7 +155,7 @@ footer {
     box-shadow:0 0 0 2px #1f83a3 inset;
 }
 
-#novo-post-form .form-section {
+#novo-post-form .form-section, #form-nova .form-section {
     margin:0 1.25rem;
     padding:.85rem 1rem;
     border:1px solid #5bb0c9;
@@ -171,7 +178,9 @@ footer {
 
 #novo-post-form input[type="text"],
 #novo-post-form input[type="url"],
-#novo-post-form textarea {
+#novo-post-form textarea,
+#form-nova input,
+#form-nova textarea {
     width:100%;
     border:none;
     outline:none;
@@ -180,7 +189,7 @@ footer {
     background:transparent;
 }
 
-#novo-post-form textarea {
+#novo-post-form textarea, #form-nova textarea {
     min-height:260px;
     resize:vertical;
 }
@@ -228,7 +237,7 @@ footer {
     font-weight:600;
 }
 
-#novo-post-form .actions button.btn-draft {
+#novo-post-form .actions button.btn-draft, #form-nova .btn-salvar {
     background:#2d96b7;
 }
 

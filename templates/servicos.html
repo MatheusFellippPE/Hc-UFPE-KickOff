@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Serviços</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/servicos.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo HC-UFPE">
+            <img class="img-ebserch" src="{% static 'src/logo-ebserh.png' %}" alt="Logo Ebserh">
+        </div>
+        <nav class="navegacao">
+            <a href="{% url 'landing' %}">Início</a>
+            <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+            <a href="{% url 'home' %}">Serviços</a>
+            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="{% url 'hub' %}">Hub</a>
+            <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Serviços</h1>
+        <section class="cards-servicos">
+            <div class="card-blue">
+                <nav class="links-servicos">
+                    <a href="#">Cardiologia</a>
+                    <a href="#">Dermatologia</a>
+                    <a href="#">Endocrinologia</a>
+                    <a href="#">Neurologia</a>
+                    <a href="#">Oncologia</a>
+                    <a href="#">Ortopedia e Traumatologia</a>
+                    <a href="#">Ginecologia e Obstetrícia</a>
+                </nav>
+                <h2>Consultas e Ambulatórios</h2>
+            </div>
+            <div class="card-green">
+                <h2>Centro de Diagnóstico</h2>
+                <nav class="links-servicos">
+                    <a href="#">Ressonância Magnética (RM)</a>
+                    <a href="#">Tomografia Computadorizada (TC)</a>
+                    <a href="#">Ultrassonografia e Doppler</a>
+                    <a href="#">Mamografia Digital</a>
+                    <a href="#">Densitometria Óssea</a>
+                    <a href="#">Análises Clínicas (Laboratório)</a>
+                </nav>
+            </div>
+            <div class="card-blue">
+                <h2>Terapias e Suporte ao Paciente</h2>
+                <nav class="links-servicos">
+                    <a href="#">Quimioterapia e Infusões</a>
+                    <a href="#">Radioterapia</a>
+                    <a href="#">Fisioterapia e Reabilitação</a>
+                    <a href="#">Hemodiálise</a>
+                    <a href="#">Suporte Psicológico</a>
+                    <a href="#">Nutrição Clínica</a>
+                </nav>
+            </div>
+            <div class="card-green">
+                <nav class="links-servicos">
+                    <a href="#">Cirurgia Geral e do Aparelho Digestivo</a>
+                    <a href="#">Cirurgia Cardiovascular</a>
+                    <a href="#">Neurocirurgia</a>
+                    <a href="#">Cirurgia Oncológica</a>
+                    <a href="#">Cirurgia Ortopédica</a>
+                    <a href="#">Transplantes</a>
+                </nav>
+                <h2>Centro Cirúrgico de Alta Complexidade</h2>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="informacoes">
+            <p><strong>Localização</strong></p>
+            <p>Av. Prof. Moraes Rego, 1235</p>
+            <p>Cidade Universitária, Recife - PE</p>
+        </div>
+        <div class="informacoes">
+            <p><strong>Contato</strong></p>
+            <p>(81) 2126-3500</p>
+            <p>contato.hc@ufpe.br</p>
+        </div>
+        <div>
+            <p><strong>FAQ</strong></p>
+        </div>
+        <div>
+            <p><strong>Especialidades Médicas</strong></p>
+        </div>
+        <nav class="links-sociais">
+            <a href=""><img src="{% static 'src/InstagramLogo.png' %}" alt="Instagram"></a>
+            <a href=""><img src="{% static 'src/FacebookLogo.png' %}" alt="Facebook"></a>
+            <a href=""><img src="{% static 'src/WhatsappLogo.png' %}" alt="Whatsapp"></a>
+        </nav>
+    </footer>
+</body>
+</html>

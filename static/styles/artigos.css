@@ -1,0 +1,39 @@
+h1, h2, h3, h4, h5, h6{
+    margin: 1.5rem 0;
+    font-weight: bold;
+}
+
+.destaques-processos-editais {
+    border-top: 3px solid var(--cor-verde);
+    border-bottom: 3px solid var(--cor-verde);
+}
+
+.destaques-processos-editais, .publicacoes-cient, .destaque {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 11px 9.8px 6px rgba(0, 0, 0, 0.2);
+    margin: 1.5rem 0;
+}
+
+.linha-divisao {
+    width: 68.25rem;
+    height: 0.5rem;
+    border-radius: 35px;
+    background-color: var(--cor-azul);
+}
+
+select, input {
+    border: 2px solid var(--cor-azul);
+    border-radius: 35px;
+    padding: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    color: var(--cor-azul);
+}
+
+.publicacao {
+    background-color: #FFFFFF;
+    border-top: 2px solid var(--cor-verde);
+    box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.2);
+}

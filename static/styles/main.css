@@ -64,7 +64,9 @@ main {
 .cards-landing-page .card-blue,
 .cards-landing-page .card-green,
 .cards-Sobre-nos .card-blue,
-.cards-Sobre-nos .card-green {
+.cards-Sobre-nos .card-green,
+.cards-servicos .card-blue,
+.cards-servicos .card-green {
     min-height: 335px;
     border-radius: 35px;
     display: grid;
@@ -80,13 +82,15 @@ main {
 
 /* Cores/bordas dos cards */
 .cards-landing-page .card-blue,
-.cards-Sobre-nos .card-blue {
+.cards-Sobre-nos .card-blue,
+.cards-servicos .card-blue {
     background: #FFFFFF;
     border: 3px solid var(--cor-azul);
     color: var(--cor-preto, #1f2937);
 }
 .cards-landing-page .card-green,
-.cards-Sobre-nos .card-green {
+.cards-Sobre-nos .card-green,
+.cards-servicos .card-green {
     background: #FFFFFF;
     border: 3px solid var(--cor-verde);
     color: var(--cor-preto, #1f2937);
@@ -220,7 +224,7 @@ main > .cards-colaboradores {
 }
 
 /* Container dos cards da página Sobre Nós (grid: a a b b / c c d d) */
-.cards-Sobre-nos {
+.cards-Sobre-nos, .cards-servicos {
     width: 85%;
     margin: 24px auto;
     box-sizing: border-box;
@@ -238,4 +242,3 @@ main > .cards-colaboradores {
 .cards-Sobre-nos > :nth-child(2) { grid-area: b; }
 .cards-Sobre-nos > :nth-child(3) { grid-area: c; }
 .cards-Sobre-nos > :nth-child(4) { grid-area: d; }
-

@@ -1,0 +1,32 @@
+@import url("variables.css");
+
+#form-nova .form-section{
+    margin: .9rem 1.25rem .9rem 1.25rem;
+}
+
+#form-nova .btn-salvar {
+    margin: 0 1.25rem 2rem 1.25rem;
+}
+
+table, thead, tbody, th, tr, td {
+    border-collapse: collapse;
+    border: none;
+}
+
+table {
+    background-color: #FFFFFF;
+    border-radius: 35px;
+    box-shadow: 0 11px 9.8px 6px rgba(0, 0, 0, 0.2);
+    padding: 3rem 1.5rem 0 1.5rem;
+}
+
+tbody {
+    gap: .625rem;
+}
+
+.linha-demanda {
+    border-top: 1px solid var(--cor-verde);
+    text-align: center;
+    margin-bottom: .625rem;
+    box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.2);
+}

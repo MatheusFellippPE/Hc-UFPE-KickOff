@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="stylesheet" href="{% static 'styles/header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/hub.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/demandas.css' %}">
 </head>
 
 <body>
@@ -41,15 +42,13 @@
 
         <form id="form-nova" method="post" action="{% url 'demandas' %}" style="display:none; margin-top:16px;">
             {% csrf_token %}
-            <div class="input-titulo">
-                <label>Título</label>
+            <div class="input-titulo form-section">
                 <input type="text" name="title" placeholder="Título" required />
             </div>
-            <div>
-                <label>Descrição</label>
-                <textarea name="description" rows="4" required></textarea>
+            <div class="form-section">
+                <textarea name="description" rows="4" placeholder="Descrição" required></textarea>
             </div>
-            <div>
+            <div class="form-section">
                 <label>Status</label>
                 <select name="status" required>
                     <option value="recebida">Recebida</option>

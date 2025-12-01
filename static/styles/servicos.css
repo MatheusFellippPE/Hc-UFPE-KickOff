@@ -1,0 +1,28 @@
+.cards-servicos {
+    background-color: #FFFFFF;
+    padding: 3.75rem;
+    border-radius: 35px;
+    box-shadow: 0 11px 9.8px 6px rgba(0, 0, 0, 0.2);
+}
+
+.links-servicos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.links-servicos a {
+    text-decoration: underline;
+    text-decoration-color: #d9d9d9; /* cinza claro */
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+.links-servicos a:hover {
+    color: #bfbfbf; /* levemente mais escuro no hover */
+}
+
+.cards-servicos > :nth-child(1) { grid-area: a; }
+.cards-servicos > :nth-child(2) { grid-area: b; }
+.cards-servicos > :nth-child(3) { grid-area: c; }
+.cards-servicos > :nth-child(4) { grid-area: d; }

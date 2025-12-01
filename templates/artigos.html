@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Artigos</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/artigos.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img class="img-hc img-hx" src="src/logo-hc-ufpe.png" alt="Logo HC-UFPE">
+            <img class="img-ebserch" src="static 'src/logo-ebserh.png" alt="Logo Ebserh">
+        </div>
+        <nav class="navegacao">
+            <a href="{% url 'landing' %}">Início</a>
+            <a href="{% url 'sobre_nos' %}">Sobre nós</a>
+            <a href="#">Serviços</a>
+            <a href="{% url 'demandas' %}">Demandas</a>
+            <a href="{% url 'hub' %}">Hub</a>
+            <a href="{% url 'accounts:login' %}" class="botao-entrar">Entrar</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Principais Processos Seletivos e Editais</h1>
+        <p>Fique atento às nossas oportunidades de ensino, pesquisa e extensão.</p>
+        <section class="destaques-processos-editais">
+            <div class="destaque edital">
+                <img src="" alt="Imagem Destaque 1">
+                <h1>Edital 05/2025 - Processo Seletivo para Residência Médica 2026</h1>
+                <p>Faça parte de um dos programas de residência médica mais conceituados do país. O Hospital das Clínicas da UFPE oferece um ambiente de aprendizado dinâmico, com preceptores renomados e acesso a casos de alta comple... Leia Mais</p>
+                <a href="">Inscreva-se</a>
+            </div>
+            <div class="destaque processo">
+                <img src="" alt="Imagem Destaque 2">
+                <h1>Seleção de Bolsistas para Projeto de Pesquisa em Doenças Tropicais</h1>
+                <p>O Núcleo de Infectologia do HC-UFPE, referência no estudo de doenças tropicais, convida estudantes de Medicina e Biomedicina a participarem de um projeto de pesquisa inovador focado em arboviroses... Leia Mais</p>
+                <a href="">Inscreva-se</a>
+            </div>
+        </section>
+
+        <div class="linha-divisao"></div>
+
+        <h1>Acervo de Publicações Científicas</h1>
+        <section class="header-secun">
+            <select name="ano-publi" id="ano-publi">
+                <option value="" disabled selected>Ano Pub.</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+            </select>
+            <select name="mes-publi" id="mes-publi">
+                <option value="" disabled selected>Mês Pub.</option>
+                <option value="janeiro">Janeiro</option>
+                <option value="fevereiro">Fevereiro</option>
+                <option value="marco">Março</option>
+                <option value="Abril">Abril</option>
+                <option value="Maio">Maio</option>
+                <option value="Junho">Junho</option>
+                <option value="Julho">Julho</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Setembro">Setembro</option>
+                <option value="Outubro">Outubro</option>
+                <option value="Novembro">Novembro</option>
+                <option value="Dezembro">Dezembro</option>
+            </select>
+            <input type="text" placeholder="Palavra-chave">
+        </section>
+
+        <section class="publicacoes-cient">
+            <div class="publicacao"></div>
+        </section>
+    </main>
+    <footer>
+            <div class="informacoes">
+                <p><strong>Localização</strong></p>
+                <p>Av. Prof. Moraes Rego, 1235</p>
+                <p>Cidade Universitária, Recife - PE</p>
+            </div>
+            <div class="informacoes">
+                <p><strong>Contato</strong></p>
+                <p>(81) 2126-3500</p>
+                <p>contato.hc@ufpe.br</p>
+            </div>
+            <div>
+                <p><strong>FAQ</strong></p>
+            </div>
+            <div>
+                <p><strong>Especialidades Médicas</strong></p>
+            </div>
+            <nav class="links-sociais">
+                <a href=""><img src="{% static 'src/InstagramLogo.png' %}" alt="Instagram"></a>
+                <a href=""><img src="{% static 'src/FacebookLogo.png' %}" alt="Facebook"></a>
+                <a href=""><img src="{% static 'src/WhatsappLogo.png' %}" alt="Whatsapp"></a>
+            </nav>
+    </footer>
+</body>
+</html>

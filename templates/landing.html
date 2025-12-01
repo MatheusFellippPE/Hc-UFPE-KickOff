@@ -17,7 +17,7 @@
         <nav class="navegacao">
             <a href="{% url 'sobre_nos' %}">Sobre nós</a>
             <a href="#">Artigos</a>
-            <a href="#">Serviços</a>
+            <a href="{% url 'home' %}">Serviços</a>
             <a href="{% url 'demandas' %}">Demandas</a>
             <a href="{% url 'hub' %}">Hub</a>
             {% if request.user.is_authenticated %}
