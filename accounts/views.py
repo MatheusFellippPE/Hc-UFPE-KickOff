@@ -8,6 +8,22 @@ from .forms import RegistrationForm, EmailLoginForm
 from .models import Profile
 import jwt, datetime
 from django.conf import settings
+from django.urls import reverse
+from urllib.parse import urlparse
+
+def _safe_next(request):
+    raw = request.GET.get("next") or request.POST.get("next")
+    if not raw:
+        return None
+    # Apenas caminhos internos (sem esquema / domínio diferente)
+    parsed = urlparse(raw)
+    if parsed.scheme or parsed.netloc:
+        return None
+    # Garante que começa com '/'
+    if not raw.startswith('/'):
+        return None
+    return raw
+
 
 def register_view(request):
     if request.method == "POST":
@@ -30,16 +46,20 @@ def register_view(request):
                     )
                     Profile.objects.create(user=user, user_type=user_type)
                 messages.success(request, "Registro realizado com sucesso. Você já pode fazer login.")
-                next_url = request.POST.get("next") or request.GET.get("next") or "accounts:login"
-                return redirect(next_url)
+                next_url = _safe_next(request)
+                # Redireciona para login, preservando next se existir
+                login_url = reverse("accounts:login")
+                if next_url:
+                    return redirect(f"{login_url}?next={next_url}")
+                return redirect(login_url)
     else:
         form = RegistrationForm()
     return render(request, "register.html", {"form": form})
 
 
 def login_view(request):
-    # determina para onde redirecionar após login
-    next_url = request.GET.get("next") or request.POST.get("next") or request.META.get("HTTP_REFERER") or "/"
+    # Sanitiza 'next'; evita usar HTTP_REFERER para não voltar ao register
+    next_url = _safe_next(request) or "/"
     if request.method == "POST":
         form = EmailLoginForm(request.POST)
         if form.is_valid():
@@ -48,7 +68,6 @@ def login_view(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                # gera JWT simples para identificação adicional (opcional)
                 payload = {
                     "uid": user.id,
                     "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=12),
@@ -76,7 +95,7 @@ def logout_view(request):
     Encerra a sessão do usuário e redireciona para 'next' (ou landing '/'). Remove JWT.
     """
     logout(request)
-    next_url = request.POST.get("next") or request.GET.get("next") or "/"
+    next_url = _safe_next(request) or "/"
     response = redirect(next_url)
     response.delete_cookie("auth_token")
     return response

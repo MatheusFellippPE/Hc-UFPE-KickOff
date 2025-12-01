@@ -37,3 +37,42 @@ select, input {
     border-top: 2px solid var(--cor-verde);
     box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.2);
 }
+
+/* Botão padrão para CTAs dos destaques */
+.destaque a.cta {
+    display: inline-block;
+    background-color: var(--cor-verde);
+    color: var(--cor-branco) !important;
+    text-decoration: none !important;
+    padding: 10px 20px;
+    border-radius: 35px;
+    font-weight: 600;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.destaque a.cta:hover {
+    filter: brightness(0.95);
+}
+
+/* Estilo forte para CTA, independente do container */
+.cta {
+    display: inline-block !important;
+    background-color: var(--cor-verde) !important;
+    color: var(--cor-branco) !important;
+    text-decoration: none !important;
+    padding: 10px 20px !important;
+    border-radius: 35px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.15) !important;
+    border: none !important;
+    cursor: pointer !important;
+    margin-top: 8px !important;
+    font-family: "Montserrat", "Segoe UI", Arial, sans-serif !important;
+}
+
+.cta:hover {
+    filter: brightness(0.95) !important;
+}
