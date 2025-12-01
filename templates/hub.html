@@ -37,9 +37,12 @@
     </header>
     <main>
         <div class="header-secun">
-            <!-- <h1>Hub de Inovação</h1> -->
             <!-- botão novo post -->
+            {% if user.is_authenticated %}
             <button id="novo-post-btn">Novo post</button>
+            {% else %}
+            <button id="novo-post-btn" disabled style="background:#aaa; color:#666; cursor:not-allowed; pointer-events:none;">Novo post</button>
+            {% endif %}
         </div>
 
         <!-- formulário oculto que envia para a mesma view hub_forum -->
@@ -145,11 +148,15 @@
 
     <script>
         // JS mínimo para mostrar/ocultar o formulário sem trabalhar o front-end
-        const novoBtn = document.getElementById('novo-post-btn');
         const form = document.getElementById('novo-post-form');
         const cancelBtn = document.getElementById('cancel-btn');
-        novoBtn.addEventListener('click', () => form.style.display = 'block');
-        cancelBtn.addEventListener('click', () => form.style.display = 'none');
+        const novoBtn = document.getElementById('novo-post-btn');
+        if (novoBtn && !novoBtn.disabled) {
+            novoBtn.addEventListener('click', () => form.style.display = 'block');
+        }
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => form.style.display = 'none');
+        }
 
         function getCookie(name) {
             const value = `; ${document.cookie}`;
