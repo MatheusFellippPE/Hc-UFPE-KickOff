@@ -17,6 +17,9 @@ if DEBUG:
         '.ngrok.io',
         '.ngrok-free.dev',
     ]
+# Fallback seguro para Railway quando não definir ALLOWED_HOSTS
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ['.up.railway.app']
 
 # CSRF trusted origins: use env or dev defaults
 _env_csrf = [o for o in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
@@ -28,6 +31,9 @@ elif DEBUG:
         'https://*.ngrok.io',
         'https://*.ngrok-free.dev',
     ]
+else:
+    # Fallback para Railway em produção
+    CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
