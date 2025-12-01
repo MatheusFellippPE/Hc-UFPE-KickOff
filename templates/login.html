@@ -17,7 +17,7 @@
     </div>
     {% endif %}
 
-    <img src="{% static 'src\doutora-registro-login.png' %}" alt="imagem de médica sorrindo">
+    <img src="{% static 'src\\doutora-registro-login.png' %}" alt="imagem de médica sorrindo">
 
     <form method="post" action="{% url 'accounts:login' %}">
       <div class="logo">
@@ -37,13 +37,11 @@
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       {% endif %}
       <div>
-        <label for="id_email">Email</label>
-        <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder="E-mail" required />
+        <input aria-label="E-mail" type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder="E-mail" required />
         {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
       </div>
       <div>
-        <label for="id_password">Senha</label>
-        <input type="password" name="password" id="id_password" placeholder="Senha" required />
+        <input aria-label="Senha" type="password" name="password" id="id_password" placeholder="Senha" required />
         {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
       </div>
 

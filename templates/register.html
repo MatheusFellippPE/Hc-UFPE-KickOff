@@ -16,7 +16,7 @@
     </div>
     {% endif %}
     
-    <img src="{% static 'src\doutora-registro-login.png' %}" alt="imagem de médica sorrindo">
+    <img src="{% static 'src\\doutora-registro-login.png' %}" alt="imagem de médica sorrindo">
     <form method="post" action="{% url 'accounts:register' %}">
       <div class="logo">
         <img class="img-hc img-hx" src="{% static 'src/logo-hc-ufpe.png' %}" alt="Logo do Hospital das Clínicas">
@@ -29,18 +29,15 @@
       {% csrf_token %}
       <div class="inputs">
         <div>
-          <label for="id_name">Nome completo</label>
-          <input type="text" name="name" id="id_name" value="{{ form.data.name }}" placeholder="Nome Completo" required />
+          <input aria-label="Nome completo" type="text" name="name" id="id_name" value="{{ form.data.name }}" placeholder="Nome Completo" required />
           {% for err in form.name.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
         </div>
         <div>
-          <label for="id_email">Email</label>
-          <input type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder ="E-mail" required />
+          <input aria-label="E-mail" type="email" name="email" id="id_email" value="{{ form.data.email }}" placeholder ="E-mail" required />
           {% for err in form.email.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
         </div>
         <div>
-          <label for="id_user_type">Tipo de usuário</label>
-          <select name="user_type" id="id_user_type" required>
+          <select aria-label="Tipo de usuário" name="user_type" id="id_user_type" required>
             <option value="aluno" {% if form.data.user_type == "aluno" %}selected{% endif %}>Aluno</option>
             <option value="professor" {% if form.data.user_type == "professor" %}selected{% endif %}>Professor</option>
             <option value="pesquisador" {% if form.data.user_type == "pesquisador" %}selected{% endif %}>Pesquisador</option>
@@ -49,14 +46,12 @@
           {% for err in form.user_type.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
         </div>
         <div>
-          <label for="id_password">Senha</label>
-          <input type="password" name="password" id="id_password" placeholder="Senha" required /><br>
+          <input aria-label="Senha" type="password" name="password" id="id_password" placeholder="Senha" required /><br>
           <small>Mín. 8, com maiúscula, minúscula, número e especial.</small>
           {% for err in form.password.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
         </div>
         <div>
-          <label for="id_password_confirmation">Confirmar Senha</label>
-          <input type="password" name="password_confirmation" id="id_password_confirmation" placeholder="Confirmar Senha" required />
+          <input aria-label="Confirmar Senha" type="password" name="password_confirmation" id="id_password_confirmation" placeholder="Confirmar Senha" required />
           {% for err in form.password_confirmation.errors %}<p style="color:red">{{ err }}</p>{% endfor %}
         </div>
         <p>Já possui conta?<a href="{% url 'accounts:login' %}"> Entrar</a></p>

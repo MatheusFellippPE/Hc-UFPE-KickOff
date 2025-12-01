@@ -1,9 +1,13 @@
 @import url("variables.css");
 
-boby {
+/* Center entire page content */
+body {
+    margin: 0;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* stack items vertically */
+    align-items: center;     /* horizontal center */
+    justify-content: center; /* vertical center */
 }
 
 .formulario {
@@ -14,6 +18,7 @@ boby {
     width: 1050px;
     height: auto;
     border-radius: 35px;
+    margin: 0 auto; /* ensure horizontal centering when body flex is not applied */
 }
 
 a {

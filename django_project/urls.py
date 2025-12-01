@@ -12,6 +12,9 @@ urlpatterns = [
     path("home/", list_create_demands, name="home"),  # agora aceita POST
     path("demandas/", include("demands.urls")),
     path("sobre-nos/", TemplateView.as_view(template_name="sobre-nos.html"), name="sobre_nos"),
+    # Novas páginas estáticas
+    path("servicos/", TemplateView.as_view(template_name="servicos.html"), name="servicos"),
+    path("artigos/", TemplateView.as_view(template_name="artigos.html"), name="artigos"),
     path("hub/", hub_forum, name="hub"),
     path("hub/react/<int:post_id>/", react_post, name="react_post"),  # novo endpoint
     path("hub/comment/<int:post_id>/", comment_post, name="comment_post"),  # novo endpoint para comentários

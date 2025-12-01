@@ -18,8 +18,8 @@
         </div>
         <nav class="navegacao">
             <a href="{% url 'landing' %}">Início</a>
-            <a href="#">Artigos</a>
-            <a href="{% url 'home' %}">Serviços</a>
+            <a href="{% url 'artigos' %}">Artigos</a>
+            <a href="{% url 'servicos' %}">Serviços</a>
             <a href="{% url 'demandas' %}">Demandas</a>
             <a href="{% url 'hub' %}">Hub</a>
             {% if request.user.is_authenticated %}
