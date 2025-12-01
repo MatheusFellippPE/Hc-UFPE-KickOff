@@ -112,27 +112,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# ALLOWED_HOSTS já vem de variável de ambiente; em produção defina ALLOWED_HOSTS="seu_dominio,localhost,127.0.0.1"
-
-# CSRF/hosts for ngrok access
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    # allow any ngrok subdomain
-    '.ngrok.app',
-    '.ngrok.io',
-    # optionally, add your exact ngrok host for stricter control
-    # 'SEU-DOMINIO.ngrok.app',
-    '.ngrok-free.dev',
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    # Django expects scheme here
-    'https://*.ngrok.app',
-    'https://*.ngrok.io',
-    'https://*.ngrok-free.dev',
-]
-
 # behind ngrok (HTTPS), ensure Django recognizes forwarded protocol
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
